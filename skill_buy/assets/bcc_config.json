@@ -1,0 +1,50 @@
+{
+  "$schema": "bcc-config-v1",
+  "_description": "百度云 BCC 云服务器购买配置 - 敏感信息(AK/SK)请通过环境变量 BCE_AK / BCE_SK 传入",
+  "region": {
+    "value": "bj",
+    "options": [
+      "bj",
+      "gz",
+      "su",
+      "bd",
+      "fwh",
+      "hkg",
+      "hk",
+      "hk02",
+      "cd",
+      "nj",
+      "yq"
+    ],
+    "label": "地域"
+  },
+  "zoneName": {
+    "value": "cn-bj-d",
+    "label": "可用区"
+  },
+  "instance": {
+    "spec": "bcc.e2.c4m16",
+    "name": "bcc-server",
+    "purchaseCount": 1
+  },
+  "image": {
+    "imageId": "m-2Iz7pNjU",
+    "imageName": "CentOS 7.2"
+  },
+  "systemDisk": {
+    "storageType": "SSD_Enhanced",
+    "sizeInGb": 100
+  },
+  "network": {
+    "subnetId": "",
+    "vpcId": "",
+    "securityGroupIds": []
+  },
+  "eip": {
+    "enabled": true,
+    "name": "bcc-eip",
+    "internetChargeType": "TRAFFIC_POSTPAID_BY_HOUR",
+    "bandwidthInMbps": 100
+  },
+  "adminPass": "Perf@host#2024"
+}
