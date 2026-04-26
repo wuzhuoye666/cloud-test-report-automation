@@ -1,0 +1,24 @@
+{
+  "machines": [
+    {
+      "id": "bdcloud-bj-001",
+      "vendor": "bdcloud",
+      "spec": "bc.g5.xlarge",
+      "ip": "填写百度云机器IP",
+      "username": "root",
+      "password": "填写密码",
+      "os": "centos",
+      "area": "bj"
+    },
+    {
+      "id": "jscloud-bj-001",
+      "vendor": "jscloud",
+      "spec": "km.gn6i.xlarge",
+      "ip": "填写金山云机器IP",
+      "username": "root",
+      "password": "填写密码",
+      "os": "centos",
+      "area": "bj"
+    }
+  ]
+}

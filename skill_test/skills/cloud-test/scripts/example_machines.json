@@ -1,0 +1,14 @@
+{
+  "machines": [
+    {
+      "id": "test-sa5-001",
+      "vendor": "qcloud",
+      "spec": "SA5",
+      "ip": "1.2.3.4",
+      "username": "root",
+      "password": "your_password_here",
+      "os": "centos",
+      "area": "gz"
+    }
+  ]
+}

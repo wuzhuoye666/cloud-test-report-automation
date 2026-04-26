@@ -1,0 +1,11 @@
+{
+  "ip": "1.2.3.4",
+  "username": "root",
+  "password": "your_password_here",
+  "vendor": "qcloud",
+  "spec": "SA5",
+  "machine_id": "test-001",
+  "remote_date": "20260115",
+  "result_dir": "tb_result_xxx",
+  "os": "centos"
+}
