@@ -1,0 +1,2292 @@
+{
+  "schema_version": "single-1.0",
+  "generated_at": "2026-04-24T08:01:19Z",
+  "task_id": "69bc5ac8",
+  "root_dir": "C:/Users/HUAWEI/Desktop/CVM项目\\Ark_lightweight\\69bc5ac8",
+  "metric_snapshot": [
+    {
+      "metric": "redis_client_get",
+      "metric_name": "Redis GET 吞吐",
+      "unit": "ops/s",
+      "higher_is_better": true,
+      "value": 820164.94,
+      "scene_title": "Redis 缓存读吞吐量",
+      "scene_desc": "高频缓存读写与键值存储"
+    },
+    {
+      "metric": "super_pi_real_time",
+      "metric_name": "super_pi 单核耗时",
+      "unit": "s",
+      "higher_is_better": false,
+      "value": 16.145,
+      "scene_title": "单核 CPU 算力",
+      "scene_desc": "单线程计算与π值高精度运算"
+    },
+    {
+      "metric": "linpack_max_matrix_computing",
+      "metric_name": "Linpack 浮点峰值",
+      "unit": "GFLOPS",
+      "higher_is_better": true,
+      "value": 72.6499,
+      "scene_title": "线性代数浮点峰值",
+      "scene_desc": "矩阵运算与 HPC 工作负载"
+    },
+    {
+      "metric": "stress_ng_cpu_ackermann",
+      "metric_name": "stress-ng 整型吞吐",
+      "unit": "ops/s",
+      "higher_is_better": true,
+      "value": 170752.0,
+      "scene_title": "CPU 整型运算吞吐",
+      "scene_desc": "递归整型算法与通用 CPU 压测"
+    },
+    {
+      "metric": "compress_mips",
+      "metric_name": "压缩吞吐",
+      "unit": "MIPS",
+      "higher_is_better": true,
+      "value": 171.0,
+      "scene_title": "数据压缩吞吐",
+      "scene_desc": "日志压缩与数据归档传输"
+    },
+    {
+      "metric": "hackbench_time",
+      "metric_name": "进程调度延迟",
+      "unit": "s",
+      "higher_is_better": false,
+      "value": 42.549,
+      "scene_title": "进程调度延迟",
+      "scene_desc": "多进程消息传递与内核调度"
+    },
+    {
+      "metric": "core_latency_lite_same_latency_avg",
+      "metric_name": "核内访存平均延迟",
+      "unit": "ns",
+      "higher_is_better": false,
+      "value": 13.818,
+      "scene_title": "核内访存平均延迟",
+      "scene_desc": "内存子系统与 Cache 访问效率"
+    },
+    {
+      "metric": "contextswitch_lat_med",
+      "metric_name": "上下文切换中位延迟",
+      "unit": "ns",
+      "higher_is_better": false,
+      "value": 2184.8,
+      "scene_title": "上下文切换中位延迟",
+      "scene_desc": "轻量级任务切换与系统调用"
+    },
+    {
+      "metric": "ffmpeg_fps",
+      "metric_name": "视频编解码吞吐",
+      "unit": "fps",
+      "higher_is_better": true,
+      "value": 6.0,
+      "scene_title": "视频编解码吞吐",
+      "scene_desc": "流媒体转码与多媒体处理"
+    },
+    {
+      "metric": "vray_render_time",
+      "metric_name": "V-Ray 渲染耗时",
+      "unit": "s",
+      "higher_is_better": false,
+      "value": 575.0,
+      "scene_title": "三维渲染耗时",
+      "scene_desc": "影视级 CG 渲染与离线计算"
+    }
+  ],
+  "visualizations": {
+    "raw_details": {
+      "compress_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "compress_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "compress_mips",
+            "data": [
+              171.0
+            ]
+          },
+          {
+            "name": "compress_uncompress_mips",
+            "data": [
+              59751.0
+            ]
+          }
+        ]
+      },
+      "contextswitch_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "contextswitch_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "contextswitch_default_ctx",
+            "data": [
+              2184.8
+            ]
+          },
+          {
+            "name": "contextswitch_lat_max",
+            "data": [
+              2201.4
+            ]
+          },
+          {
+            "name": "contextswitch_lat_med",
+            "data": [
+              2184.8
+            ]
+          },
+          {
+            "name": "contextswitch_lat_min",
+            "data": [
+              2174.0
+            ]
+          },
+          {
+            "name": "contextswitch_lat_std",
+            "data": [
+              9.349
+            ]
+          },
+          {
+            "name": "contextswitch_same_core_ctx",
+            "data": [
+              2012.76
+            ]
+          },
+          {
+            "name": "contextswitch_same_node_ctx",
+            "data": [
+              2182.44
+            ]
+          },
+          {
+            "name": "contextswitch_systemcall",
+            "data": [
+              125.313
+            ]
+          }
+        ]
+      },
+      "core_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "core_latency_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "core_latency_lite_same_latency_avg",
+            "data": [
+              13.818
+            ]
+          },
+          {
+            "name": "core_latency_lite_same_latency_max",
+            "data": [
+              13.8175
+            ]
+          },
+          {
+            "name": "core_latency_lite_same_latency_min",
+            "data": [
+              13.8175
+            ]
+          },
+          {
+            "name": "core_latency_lite_same_latency_stdev",
+            "data": [
+              0.0
+            ]
+          }
+        ]
+      },
+      "ffmpeg_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "ffmpeg_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "ffmpeg_fps",
+            "data": [
+              6.0
+            ]
+          }
+        ]
+      },
+      "hackbench_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "hackbench_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "hackbench_time",
+            "data": [
+              42.549
+            ]
+          }
+        ]
+      },
+      "ipi_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "ipi_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "ipi_broadcast_ipi_ipi_time",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "ipi_broadcast_ipi_total_time",
+            "data": [
+              133032274.0
+            ]
+          },
+          {
+            "name": "ipi_broadcast_lock_ipi_time",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "ipi_broadcast_lock_total_time",
+            "data": [
+              132551828.5
+            ]
+          },
+          {
+            "name": "ipi_dry_run_ipi_time",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "ipi_dry_run_total_time",
+            "data": [
+              247896.8
+            ]
+          },
+          {
+            "name": "ipi_self_ipi_ipi_time",
+            "data": [
+              4108019.5
+            ]
+          },
+          {
+            "name": "ipi_self_ipi_max_ipi_time",
+            "data": [
+              21507.0
+            ]
+          },
+          {
+            "name": "ipi_self_ipi_total_time",
+            "data": [
+              7898092.1
+            ]
+          },
+          {
+            "name": "ipi_special_cpu_self_ipi_time",
+            "data": [
+              129953572.3
+            ]
+          },
+          {
+            "name": "ipi_special_cpu_self_max_ipi_time",
+            "data": [
+              51883.0
+            ]
+          },
+          {
+            "name": "ipi_special_cpu_self_total_time",
+            "data": [
+              136983669.7
+            ]
+          }
+        ]
+      },
+      "linpack_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "linpack_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "linpack_max_matrix_computing",
+            "data": [
+              72.6499
+            ]
+          }
+        ]
+      },
+      "openssl_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "openssl_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "openssl_EdDSA_Ed25519_size_253_sign",
+            "data": [
+              30061.9
+            ]
+          },
+          {
+            "name": "openssl_EdDSA_Ed25519_size_253_verify",
+            "data": [
+              9240.6
+            ]
+          },
+          {
+            "name": "openssl_EdDSA_Ed448_size_456_sign",
+            "data": [
+              4297.2
+            ]
+          },
+          {
+            "name": "openssl_EdDSA_Ed448_size_456_verify",
+            "data": [
+              2127.2
+            ]
+          },
+          {
+            "name": "openssl_aes_128_size_1024",
+            "data": [
+              267476990.0
+            ]
+          },
+          {
+            "name": "openssl_aes_128_size_16",
+            "data": [
+              249844700.0
+            ]
+          },
+          {
+            "name": "openssl_aes_128_size_16384",
+            "data": [
+              267162969.99999997
+            ]
+          },
+          {
+            "name": "openssl_aes_128_size_256",
+            "data": [
+              266870610.0
+            ]
+          },
+          {
+            "name": "openssl_aes_128_size_64",
+            "data": [
+              262587330.00000003
+            ]
+          },
+          {
+            "name": "openssl_aes_128_size_8192",
+            "data": [
+              267307690.0
+            ]
+          },
+          {
+            "name": "openssl_aes_192_size_1024",
+            "data": [
+              231457560.0
+            ]
+          },
+          {
+            "name": "openssl_aes_192_size_16",
+            "data": [
+              217378290.0
+            ]
+          },
+          {
+            "name": "openssl_aes_192_size_16384",
+            "data": [
+              230643030.0
+            ]
+          },
+          {
+            "name": "openssl_aes_192_size_256",
+            "data": [
+              230027520.0
+            ]
+          },
+          {
+            "name": "openssl_aes_192_size_64",
+            "data": [
+              227749670.0
+            ]
+          },
+          {
+            "name": "openssl_aes_192_size_8192",
+            "data": [
+              230189740.0
+            ]
+          },
+          {
+            "name": "openssl_aes_256_size_1024",
+            "data": [
+              203154430.0
+            ]
+          },
+          {
+            "name": "openssl_aes_256_size_16",
+            "data": [
+              192839050.0
+            ]
+          },
+          {
+            "name": "openssl_aes_256_size_16384",
+            "data": [
+              202866690.0
+            ]
+          },
+          {
+            "name": "openssl_aes_256_size_256",
+            "data": [
+              202298540.0
+            ]
+          },
+          {
+            "name": "openssl_aes_256_size_64",
+            "data": [
+              200661180.0
+            ]
+          },
+          {
+            "name": "openssl_aes_256_size_8192",
+            "data": [
+              203046910.0
+            ]
+          },
+          {
+            "name": "openssl_blowfish_size_1024",
+            "data": [
+              134821070.0
+            ]
+          },
+          {
+            "name": "openssl_blowfish_size_16",
+            "data": [
+              124291030.0
+            ]
+          },
+          {
+            "name": "openssl_blowfish_size_16384",
+            "data": [
+              134447100.0
+            ]
+          },
+          {
+            "name": "openssl_blowfish_size_256",
+            "data": [
+              133896700.00000001
+            ]
+          },
+          {
+            "name": "openssl_blowfish_size_64",
+            "data": [
+              131883459.99999999
+            ]
+          },
+          {
+            "name": "openssl_blowfish_size_8192",
+            "data": [
+              134397950.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_128_size_1024",
+            "data": [
+              163161430.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_128_size_16",
+            "data": [
+              121351020.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_128_size_16384",
+            "data": [
+              164386130.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_128_size_256",
+            "data": [
+              161005310.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_128_size_64",
+            "data": [
+              151369490.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_128_size_8192",
+            "data": [
+              164214100.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_192_size_1024",
+            "data": [
+              122062510.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_192_size_16",
+            "data": [
+              97175300.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_192_size_16384",
+            "data": [
+              122732540.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_192_size_256",
+            "data": [
+              120976040.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_192_size_64",
+            "data": [
+              115192730.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_192_size_8192",
+            "data": [
+              123080010.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_256_size_1024",
+            "data": [
+              122075140.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_256_size_16",
+            "data": [
+              97123160.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_256_size_16384",
+            "data": [
+              122770770.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_256_size_256",
+            "data": [
+              121224990.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_256_size_64",
+            "data": [
+              115236630.0
+            ]
+          },
+          {
+            "name": "openssl_camellia_256_size_8192",
+            "data": [
+              122743470.0
+            ]
+          },
+          {
+            "name": "openssl_cast_size_1024",
+            "data": [
+              111617710.0
+            ]
+          },
+          {
+            "name": "openssl_cast_size_16",
+            "data": [
+              104944330.0
+            ]
+          },
+          {
+            "name": "openssl_cast_size_16384",
+            "data": [
+              111717030.0
+            ]
+          },
+          {
+            "name": "openssl_cast_size_256",
+            "data": [
+              111344130.0
+            ]
+          },
+          {
+            "name": "openssl_cast_size_64",
+            "data": [
+              110461520.0
+            ]
+          },
+          {
+            "name": "openssl_cast_size_8192",
+            "data": [
+              111839910.0
+            ]
+          },
+          {
+            "name": "openssl_des_size_1024",
+            "data": [
+              25843030.0
+            ]
+          },
+          {
+            "name": "openssl_des_size_16",
+            "data": [
+              25495290.0
+            ]
+          },
+          {
+            "name": "openssl_des_size_16384",
+            "data": [
+              25848490.0
+            ]
+          },
+          {
+            "name": "openssl_des_size_256",
+            "data": [
+              25803780.0
+            ]
+          },
+          {
+            "name": "openssl_des_size_64",
+            "data": [
+              25822420.0
+            ]
+          },
+          {
+            "name": "openssl_des_size_8192",
+            "data": [
+              25862140.0
+            ]
+          },
+          {
+            "name": "openssl_dsa_size_1024_sign",
+            "data": [
+              10643.8
+            ]
+          },
+          {
+            "name": "openssl_dsa_size_1024_verify",
+            "data": [
+              13180.8
+            ]
+          },
+          {
+            "name": "openssl_dsa_size_2048_sign",
+            "data": [
+              3710.5
+            ]
+          },
+          {
+            "name": "openssl_dsa_size_2048_verify",
+            "data": [
+              4098.4
+            ]
+          },
+          {
+            "name": "openssl_dsa_size_512_sign",
+            "data": [
+              20638.7
+            ]
+          },
+          {
+            "name": "openssl_dsa_size_512_verify",
+            "data": [
+              30004.9
+            ]
+          },
+          {
+            "name": "openssl_ecdh_X25519_size_253",
+            "data": [
+              27353.9
+            ]
+          },
+          {
+            "name": "openssl_ecdh_X448_size_448",
+            "data": [
+              2414.3
+            ]
+          },
+          {
+            "name": "openssl_ecdh_nistp224_size_224",
+            "data": [
+              3749.1
+            ]
+          },
+          {
+            "name": "openssl_ecdh_nistp256_size_256",
+            "data": [
+              16600.5
+            ]
+          },
+          {
+            "name": "openssl_ecdh_nistp384_size_384",
+            "data": [
+              1435.0
+            ]
+          },
+          {
+            "name": "openssl_ecdh_nistp521_size_521",
+            "data": [
+              601.7
+            ]
+          },
+          {
+            "name": "openssl_ecdsa_nistp224_size_224_sign",
+            "data": [
+              3568.6
+            ]
+          },
+          {
+            "name": "openssl_ecdsa_nistp224_size_224_verify",
+            "data": [
+              3801.2
+            ]
+          },
+          {
+            "name": "openssl_ecdsa_nistp256_size_256_sign",
+            "data": [
+              42042.8
+            ]
+          },
+          {
+            "name": "openssl_ecdsa_nistp256_size_256_verify",
+            "data": [
+              12735.3
+            ]
+          },
+          {
+            "name": "openssl_ecdsa_nistp384_size_384_sign",
+            "data": [
+              1368.2
+            ]
+          },
+          {
+            "name": "openssl_ecdsa_nistp384_size_384_verify",
+            "data": [
+              1610.1
+            ]
+          },
+          {
+            "name": "openssl_ecdsa_nistp521_size_521_sign",
+            "data": [
+              570.6
+            ]
+          },
+          {
+            "name": "openssl_ecdsa_nistp521_size_521_verify",
+            "data": [
+              719.2
+            ]
+          },
+          {
+            "name": "openssl_ghash_size_1024",
+            "data": [
+              12489929050.0
+            ]
+          },
+          {
+            "name": "openssl_ghash_size_16",
+            "data": [
+              1663038570.0
+            ]
+          },
+          {
+            "name": "openssl_ghash_size_16384",
+            "data": [
+              12774473290.0
+            ]
+          },
+          {
+            "name": "openssl_ghash_size_256",
+            "data": [
+              11997003350.0
+            ]
+          },
+          {
+            "name": "openssl_ghash_size_64",
+            "data": [
+              6285136380.0
+            ]
+          },
+          {
+            "name": "openssl_ghash_size_8192",
+            "data": [
+              12703541930.0
+            ]
+          },
+          {
+            "name": "openssl_hmac_md5_size_1024",
+            "data": [
+              535350270.0
+            ]
+          },
+          {
+            "name": "openssl_hmac_md5_size_16",
+            "data": [
+              60208210.0
+            ]
+          },
+          {
+            "name": "openssl_hmac_md5_size_16384",
+            "data": [
+              615437650.0
+            ]
+          },
+          {
+            "name": "openssl_hmac_md5_size_256",
+            "data": [
+              379215880.0
+            ]
+          },
+          {
+            "name": "openssl_hmac_md5_size_64",
+            "data": [
+              174216830.0
+            ]
+          },
+          {
+            "name": "openssl_hmac_md5_size_8192",
+            "data": [
+              609962670.0
+            ]
+          },
+          {
+            "name": "openssl_idea_size_1024",
+            "data": [
+              94957230.0
+            ]
+          },
+          {
+            "name": "openssl_idea_size_16",
+            "data": [
+              91080960.0
+            ]
+          },
+          {
+            "name": "openssl_idea_size_16384",
+            "data": [
+              95312140.0
+            ]
+          },
+          {
+            "name": "openssl_idea_size_256",
+            "data": [
+              94771630.0
+            ]
+          },
+          {
+            "name": "openssl_idea_size_64",
+            "data": [
+              93994500.0
+            ]
+          },
+          {
+            "name": "openssl_idea_size_8192",
+            "data": [
+              95081810.0
+            ]
+          },
+          {
+            "name": "openssl_md2_size_1024",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_md2_size_16",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_md2_size_16384",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_md2_size_256",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_md2_size_64",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_md2_size_8192",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_md4_size_1024",
+            "data": [
+              920621400.0
+            ]
+          },
+          {
+            "name": "openssl_md4_size_16",
+            "data": [
+              117193260.0
+            ]
+          },
+          {
+            "name": "openssl_md4_size_16384",
+            "data": [
+              1045721130.0
+            ]
+          },
+          {
+            "name": "openssl_md4_size_256",
+            "data": [
+              667350870.0
+            ]
+          },
+          {
+            "name": "openssl_md4_size_64",
+            "data": [
+              322311570.0
+            ]
+          },
+          {
+            "name": "openssl_md4_size_8192",
+            "data": [
+              1035097430.0
+            ]
+          },
+          {
+            "name": "openssl_md5_size_1024",
+            "data": [
+              584464730.0
+            ]
+          },
+          {
+            "name": "openssl_md5_size_16",
+            "data": [
+              138181440.0
+            ]
+          },
+          {
+            "name": "openssl_md5_size_16384",
+            "data": [
+              619724800.0
+            ]
+          },
+          {
+            "name": "openssl_md5_size_256",
+            "data": [
+              493501270.0
+            ]
+          },
+          {
+            "name": "openssl_md5_size_64",
+            "data": [
+              304843610.0
+            ]
+          },
+          {
+            "name": "openssl_md5_size_8192",
+            "data": [
+              617420120.0
+            ]
+          },
+          {
+            "name": "openssl_mdc2_size_1024",
+            "data": [
+              18676050.0
+            ]
+          },
+          {
+            "name": "openssl_mdc2_size_16",
+            "data": [
+              17608010.0
+            ]
+          },
+          {
+            "name": "openssl_mdc2_size_16384",
+            "data": [
+              18732370.0
+            ]
+          },
+          {
+            "name": "openssl_mdc2_size_256",
+            "data": [
+              18627810.0
+            ]
+          },
+          {
+            "name": "openssl_mdc2_size_64",
+            "data": [
+              18237720.0
+            ]
+          },
+          {
+            "name": "openssl_mdc2_size_8192",
+            "data": [
+              18699610.0
+            ]
+          },
+          {
+            "name": "openssl_rand_size_1024",
+            "data": [
+              1130129890.0
+            ]
+          },
+          {
+            "name": "openssl_rand_size_16",
+            "data": [
+              21484100.0
+            ]
+          },
+          {
+            "name": "openssl_rand_size_16384",
+            "data": [
+              4748088930.0
+            ]
+          },
+          {
+            "name": "openssl_rand_size_256",
+            "data": [
+              324827800.0
+            ]
+          },
+          {
+            "name": "openssl_rand_size_64",
+            "data": [
+              85596080.0
+            ]
+          },
+          {
+            "name": "openssl_rand_size_8192",
+            "data": [
+              3899989640.0
+            ]
+          },
+          {
+            "name": "openssl_rc2_size_1024",
+            "data": [
+              43355950.0
+            ]
+          },
+          {
+            "name": "openssl_rc2_size_16",
+            "data": [
+              42417280.0
+            ]
+          },
+          {
+            "name": "openssl_rc2_size_16384",
+            "data": [
+              43237380.0
+            ]
+          },
+          {
+            "name": "openssl_rc2_size_256",
+            "data": [
+              43204860.0
+            ]
+          },
+          {
+            "name": "openssl_rc2_size_64",
+            "data": [
+              43037160.0
+            ]
+          },
+          {
+            "name": "openssl_rc2_size_8192",
+            "data": [
+              43204610.0
+            ]
+          },
+          {
+            "name": "openssl_rc4_size_1024",
+            "data": [
+              383036760.0
+            ]
+          },
+          {
+            "name": "openssl_rc4_size_16",
+            "data": [
+              543771590.0
+            ]
+          },
+          {
+            "name": "openssl_rc4_size_16384",
+            "data": [
+              381796350.0
+            ]
+          },
+          {
+            "name": "openssl_rc4_size_256",
+            "data": [
+              385722620.0
+            ]
+          },
+          {
+            "name": "openssl_rc4_size_64",
+            "data": [
+              399087870.0
+            ]
+          },
+          {
+            "name": "openssl_rc4_size_8192",
+            "data": [
+              382391640.0
+            ]
+          },
+          {
+            "name": "openssl_rc5_32_12_size_1024",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_rc5_32_12_size_16",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_rc5_32_12_size_16384",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_rc5_32_12_size_256",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_rc5_32_12_size_64",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_rc5_32_12_size_8192",
+            "data": [
+              0.0
+            ]
+          },
+          {
+            "name": "openssl_rmd160_size_1024",
+            "data": [
+              234376530.0
+            ]
+          },
+          {
+            "name": "openssl_rmd160_size_16",
+            "data": [
+              48230270.0
+            ]
+          },
+          {
+            "name": "openssl_rmd160_size_16384",
+            "data": [
+              254787580.0
+            ]
+          },
+          {
+            "name": "openssl_rmd160_size_256",
+            "data": [
+              191226790.0
+            ]
+          },
+          {
+            "name": "openssl_rmd160_size_64",
+            "data": [
+              109246550.0
+            ]
+          },
+          {
+            "name": "openssl_rmd160_size_8192",
+            "data": [
+              254154750.0
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_1024_sign",
+            "data": [
+              9972.6
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_1024_verify",
+            "data": [
+              170166.6
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_15360_sign",
+            "data": [
+              4.4
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_15360_verify",
+            "data": [
+              1012.7
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_2048_sign",
+            "data": [
+              1539.5
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_2048_verify",
+            "data": [
+              51132.5
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_3072_sign",
+            "data": [
+              498.2
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_3072_verify",
+            "data": [
+              23933.7
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_4096_sign",
+            "data": [
+              218.4
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_4096_verify",
+            "data": [
+              13737.0
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_512_sign",
+            "data": [
+              31053.6
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_512_verify",
+            "data": [
+              430012.4
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_7680_sign",
+            "data": [
+              23.9
+            ]
+          },
+          {
+            "name": "openssl_rsa_size_7680_verify",
+            "data": [
+              3998.3
+            ]
+          },
+          {
+            "name": "openssl_seed_size_1024",
+            "data": [
+              75794090.0
+            ]
+          },
+          {
+            "name": "openssl_seed_size_16",
+            "data": [
+              75096280.0
+            ]
+          },
+          {
+            "name": "openssl_seed_size_16384",
+            "data": [
+              75841540.0
+            ]
+          },
+          {
+            "name": "openssl_seed_size_256",
+            "data": [
+              75767810.0
+            ]
+          },
+          {
+            "name": "openssl_seed_size_64",
+            "data": [
+              75706940.0
+            ]
+          },
+          {
+            "name": "openssl_seed_size_8192",
+            "data": [
+              75855190.0
+            ]
+          },
+          {
+            "name": "openssl_sha1_size_1024",
+            "data": [
+              1448995840.0
+            ]
+          },
+          {
+            "name": "openssl_sha1_size_16",
+            "data": [
+              226261110.0
+            ]
+          },
+          {
+            "name": "openssl_sha1_size_16384",
+            "data": [
+              1598557840.0
+            ]
+          },
+          {
+            "name": "openssl_sha1_size_256",
+            "data": [
+              1135968680.0
+            ]
+          },
+          {
+            "name": "openssl_sha1_size_64",
+            "data": [
+              622920170.0
+            ]
+          },
+          {
+            "name": "openssl_sha1_size_8192",
+            "data": [
+              1581315410.0
+            ]
+          },
+          {
+            "name": "openssl_sha256_size_1024",
+            "data": [
+              1336128170.0
+            ]
+          },
+          {
+            "name": "openssl_sha256_size_16",
+            "data": [
+              227773270.0
+            ]
+          },
+          {
+            "name": "openssl_sha256_size_16384",
+            "data": [
+              1441092950.0
+            ]
+          },
+          {
+            "name": "openssl_sha256_size_256",
+            "data": [
+              1082292650.0
+            ]
+          },
+          {
+            "name": "openssl_sha256_size_64",
+            "data": [
+              613967450.0
+            ]
+          },
+          {
+            "name": "openssl_sha256_size_8192",
+            "data": [
+              1433395200.0
+            ]
+          },
+          {
+            "name": "openssl_sha512_size_1024",
+            "data": [
+              547184160.0
+            ]
+          },
+          {
+            "name": "openssl_sha512_size_16",
+            "data": [
+              60994810.0
+            ]
+          },
+          {
+            "name": "openssl_sha512_size_16384",
+            "data": [
+              624214020.0
+            ]
+          },
+          {
+            "name": "openssl_sha512_size_256",
+            "data": [
+              387654140.0
+            ]
+          },
+          {
+            "name": "openssl_sha512_size_64",
+            "data": [
+              244347560.0
+            ]
+          },
+          {
+            "name": "openssl_sha512_size_8192",
+            "data": [
+              618881020.0
+            ]
+          },
+          {
+            "name": "openssl_whirlpool_size_1024",
+            "data": [
+              188312920.0
+            ]
+          },
+          {
+            "name": "openssl_whirlpool_size_16",
+            "data": [
+              45502700.0
+            ]
+          },
+          {
+            "name": "openssl_whirlpool_size_16384",
+            "data": [
+              200223400.0
+            ]
+          },
+          {
+            "name": "openssl_whirlpool_size_256",
+            "data": [
+              157364740.0
+            ]
+          },
+          {
+            "name": "openssl_whirlpool_size_64",
+            "data": [
+              95397760.0
+            ]
+          },
+          {
+            "name": "openssl_whirlpool_size_8192",
+            "data": [
+              199701230.0
+            ]
+          }
+        ]
+      },
+      "perf_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "perf_bench_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "perf_bench_hash_avg",
+            "data": [
+              3634483.0
+            ]
+          },
+          {
+            "name": "perf_bench_hash_max",
+            "data": [
+              3634483.0
+            ]
+          },
+          {
+            "name": "perf_bench_hash_min",
+            "data": [
+              3634483.0
+            ]
+          },
+          {
+            "name": "perf_bench_lock_pi_avg",
+            "data": [
+              8404.0
+            ]
+          },
+          {
+            "name": "perf_bench_lock_pi_max",
+            "data": [
+              8404.0
+            ]
+          },
+          {
+            "name": "perf_bench_lock_pi_min",
+            "data": [
+              8404.0
+            ]
+          },
+          {
+            "name": "perf_bench_messaging_avg",
+            "data": [
+              0.5004000000000001
+            ]
+          },
+          {
+            "name": "perf_bench_messaging_max",
+            "data": [
+              0.518
+            ]
+          },
+          {
+            "name": "perf_bench_messaging_min",
+            "data": [
+              0.491
+            ]
+          },
+          {
+            "name": "perf_bench_pipe_average",
+            "data": [
+              5.8888
+            ]
+          },
+          {
+            "name": "perf_bench_pipe_max",
+            "data": [
+              5.951
+            ]
+          },
+          {
+            "name": "perf_bench_pipe_min",
+            "data": [
+              5.863
+            ]
+          },
+          {
+            "name": "perf_bench_requeued_avg",
+            "data": [
+              0.0014
+            ]
+          },
+          {
+            "name": "perf_bench_requeued_max",
+            "data": [
+              0.002
+            ]
+          },
+          {
+            "name": "perf_bench_requeued_min",
+            "data": [
+              0.001
+            ]
+          },
+          {
+            "name": "perf_bench_wake_avg",
+            "data": [
+              0.0076
+            ]
+          },
+          {
+            "name": "perf_bench_wake_max",
+            "data": [
+              0.024
+            ]
+          },
+          {
+            "name": "perf_bench_wake_min",
+            "data": [
+              0.003
+            ]
+          },
+          {
+            "name": "perf_bench_wake_parallel_avg",
+            "data": [
+              0.0019
+            ]
+          },
+          {
+            "name": "perf_bench_wake_parallel_max",
+            "data": [
+              0.0025
+            ]
+          },
+          {
+            "name": "perf_bench_wake_parallel_min",
+            "data": [
+              0.001
+            ]
+          }
+        ]
+      },
+      "redis_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "redis_single_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "redis_client_get",
+            "data": [
+              820164.94
+            ]
+          },
+          {
+            "name": "redis_client_hset",
+            "data": [
+              417951.525
+            ]
+          },
+          {
+            "name": "redis_client_incr",
+            "data": [
+              1423334.185
+            ]
+          },
+          {
+            "name": "redis_client_lpush",
+            "data": [
+              508571.03
+            ]
+          },
+          {
+            "name": "redis_client_sadd",
+            "data": [
+              1453638.815
+            ]
+          },
+          {
+            "name": "redis_client_set",
+            "data": [
+              351489.21
+            ]
+          }
+        ]
+      },
+      "stream_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "stream_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "stream_add",
+            "data": [
+              22746.1
+            ]
+          },
+          {
+            "name": "stream_copy",
+            "data": [
+              27212.3
+            ]
+          },
+          {
+            "name": "stream_ht1_add",
+            "data": [
+              20984.03
+            ]
+          },
+          {
+            "name": "stream_ht1_copy",
+            "data": [
+              27747.57
+            ]
+          },
+          {
+            "name": "stream_ht1_scale",
+            "data": [
+              17873.17
+            ]
+          },
+          {
+            "name": "stream_ht1_triad",
+            "data": [
+              21548.6
+            ]
+          },
+          {
+            "name": "stream_ht2_add",
+            "data": [
+              21019.8
+            ]
+          },
+          {
+            "name": "stream_ht2_copy",
+            "data": [
+              27991.63
+            ]
+          },
+          {
+            "name": "stream_ht2_scale",
+            "data": [
+              18060.43
+            ]
+          },
+          {
+            "name": "stream_ht2_triad",
+            "data": [
+              21573.43
+            ]
+          },
+          {
+            "name": "stream_scale",
+            "data": [
+              21660.33
+            ]
+          },
+          {
+            "name": "stream_triad",
+            "data": [
+              22127.67
+            ]
+          }
+        ]
+      },
+      "stress_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "stress_ng_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "stress_ng_cpu_ackermann",
+            "data": [
+              170752.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_bitops",
+            "data": [
+              380571.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_callfunc",
+            "data": [
+              198989306.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_cdouble",
+            "data": [
+              682095.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_cfloat",
+            "data": [
+              464643.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_clongdouble",
+            "data": [
+              5576.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_correlate",
+            "data": [
+              33355.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_crc16",
+            "data": [
+              14796.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_dither",
+            "data": [
+              25793.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_djb2a",
+            "data": [
+              10699108.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_double",
+            "data": [
+              1316585.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_euler",
+            "data": [
+              1506851807.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_explog",
+            "data": [
+              34419.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_fft",
+            "data": [
+              170533.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_fibonacci",
+            "data": [
+              1494914904.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_float",
+            "data": [
+              2847381.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_fnv1a",
+            "data": [
+              11552969.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_gamma",
+            "data": [
+              34181.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_gcd",
+            "data": [
+              216377.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_gray",
+            "data": [
+              1624520.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_hamming",
+            "data": [
+              297779.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_hanoi",
+            "data": [
+              9296801.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_hyperbolic",
+            "data": [
+              159228.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_idct",
+            "data": [
+              6321929.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int128",
+            "data": [
+              3005300.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int128double",
+            "data": [
+              1137271.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int128float",
+            "data": [
+              1885539.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int128longdouble",
+            "data": [
+              127631.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int16",
+            "data": [
+              6099068.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int32",
+            "data": [
+              6215667.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int32double",
+            "data": [
+              1359015.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int32float",
+            "data": [
+              2201396.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int32longdouble",
+            "data": [
+              131145.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int64",
+            "data": [
+              5890757.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int64double",
+            "data": [
+              1336863.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int64float",
+            "data": [
+              2128608.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int64longdouble",
+            "data": [
+              130371.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_int8",
+            "data": [
+              6137547.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_jenkin",
+            "data": [
+              3874610.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_jmp",
+            "data": [
+              7321711.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_ln2",
+            "data": [
+              6198065.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_longdouble",
+            "data": [
+              132876.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_loop",
+            "data": [
+              2503627.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_matrixprod",
+            "data": [
+              19041.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_nsqrt",
+            "data": [
+              252511909.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_omega",
+            "data": [
+              327252227.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_parity",
+            "data": [
+              2388082.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_phi",
+            "data": [
+              1611266108.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_pi",
+            "data": [
+              44806022.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_pjw",
+            "data": [
+              8281496.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_prime",
+            "data": [
+              31944.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_psi",
+            "data": [
+              369030237.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_queens",
+            "data": [
+              52341.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_rand",
+            "data": [
+              1667081.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_rand48",
+            "data": [
+              412591.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_rgb",
+            "data": [
+              8137330.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_sdbm",
+            "data": [
+              11325573.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_sieve",
+            "data": [
+              252536.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_sqrt",
+            "data": [
+              387144.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_trig",
+            "data": [
+              113415.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_union",
+            "data": [
+              2404475.0
+            ]
+          },
+          {
+            "name": "stress_ng_cpu_zeta",
+            "data": [
+              90250.0
+            ]
+          },
+          {
+            "name": "stress_ng_ops",
+            "data": [
+              99198.0
+            ]
+          },
+          {
+            "name": "stress_ng_real_time",
+            "data": [
+              60.0
+            ]
+          },
+          {
+            "name": "stress_ng_real_time_ops_per_s",
+            "data": [
+              1653.26
+            ]
+          },
+          {
+            "name": "stress_ng_sys_time",
+            "data": [
+              0.72
+            ]
+          },
+          {
+            "name": "stress_ng_usr_sys_time_ops_per_s",
+            "data": [
+              848.35
+            ]
+          },
+          {
+            "name": "stress_ng_usr_time",
+            "data": [
+              116.21
+            ]
+          }
+        ]
+      },
+      "super_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "super_pi_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "super_pi_real_time",
+            "data": [
+              16.145
+            ]
+          },
+          {
+            "name": "super_pi_sys_time",
+            "data": [
+              0.002
+            ]
+          },
+          {
+            "name": "super_pi_user_time",
+            "data": [
+              16.138
+            ]
+          }
+        ]
+      },
+      "vray_performance": {
+        "chart_type": "bar",
+        "xAxis": {
+          "data": [
+            "vray_baseline"
+          ]
+        },
+        "series": [
+          {
+            "name": "vray_render_time",
+            "data": [
+              575.0
+            ]
+          }
+        ]
+      }
+    },
+    "radar_chart": {
+      "chart_type": "radar",
+      "title": "CPU 微架构雷达图（单机）",
+      "radar": {
+        "indicator": [
+          {
+            "name": "线性代数(Linpack)",
+            "max": 300
+          },
+          {
+            "name": "整型吞吐(stress-ng)",
+            "max": 600000
+          },
+          {
+            "name": "压缩性能(MIPS)",
+            "max": 8000
+          },
+          {
+            "name": "单核耗时(super_pi)",
+            "max": 30
+          }
+        ]
+      },
+      "series": [
+        {
+          "type": "radar",
+          "data": [
+            {
+              "name": "69bc5ac8",
+              "value": [
+                72.6499,
+                170752.0,
+                171.0,
+                13.855
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "diagnosis_hints": {},
+  "analysis_summary": {
+    "test_count": 14,
+    "metric_count": 334,
+    "chart_count": 14
+  }
+}

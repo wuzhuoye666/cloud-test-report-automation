@@ -1,0 +1,1112 @@
+{
+  "task_id": "jvsclaw",
+  "visualizations": {
+    "compress_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "compress_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "compress_mips",
+          "data": [
+            3696.0
+          ]
+        },
+        {
+          "name": "compress_uncompress_mips",
+          "data": [
+            2697.0
+          ]
+        }
+      ]
+    },
+    "contextswitch_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "contextswitch_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "contextswitch_default_ctx",
+          "data": [
+            3475.82
+          ]
+        },
+        {
+          "name": "contextswitch_lat_max",
+          "data": [
+            3548.4
+          ]
+        },
+        {
+          "name": "contextswitch_lat_med",
+          "data": [
+            3475.82
+          ]
+        },
+        {
+          "name": "contextswitch_lat_min",
+          "data": [
+            3420.7
+          ]
+        },
+        {
+          "name": "contextswitch_lat_std",
+          "data": [
+            47.389
+          ]
+        },
+        {
+          "name": "contextswitch_same_core_ctx",
+          "data": [
+            2699.14
+          ]
+        },
+        {
+          "name": "contextswitch_same_node_ctx",
+          "data": [
+            3491.14
+          ]
+        },
+        {
+          "name": "contextswitch_systemcall",
+          "data": [
+            408.227
+          ]
+        }
+      ]
+    },
+    "core_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "core_latency_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "core_latency_lite_same_latency_avg",
+          "data": [
+            22.508
+          ]
+        },
+        {
+          "name": "core_latency_lite_same_latency_max",
+          "data": [
+            30.325
+          ]
+        },
+        {
+          "name": "core_latency_lite_same_latency_min",
+          "data": [
+            10.8875
+          ]
+        },
+        {
+          "name": "core_latency_lite_same_latency_stdev",
+          "data": [
+            6.792
+          ]
+        }
+      ]
+    },
+    "ffmpeg_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "ffmpeg_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "ffmpeg_fps",
+          "data": [
+            10.0
+          ]
+        }
+      ]
+    },
+    "hackbench_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "hackbench_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "hackbench_time",
+          "data": [
+            40.952
+          ]
+        }
+      ]
+    },
+    "ipi_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "ipi_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "ipi_broadcast_ipi_ipi_time",
+          "data": [
+            0.0
+          ]
+        },
+        {
+          "name": "ipi_broadcast_ipi_total_time",
+          "data": [
+            617712577.0
+          ]
+        },
+        {
+          "name": "ipi_broadcast_lock_ipi_time",
+          "data": [
+            0.0
+          ]
+        },
+        {
+          "name": "ipi_broadcast_lock_total_time",
+          "data": [
+            623876442.3
+          ]
+        },
+        {
+          "name": "ipi_dry_run_ipi_time",
+          "data": [
+            0.0
+          ]
+        },
+        {
+          "name": "ipi_dry_run_total_time",
+          "data": [
+            202191.0
+          ]
+        },
+        {
+          "name": "ipi_self_ipi_ipi_time",
+          "data": [
+            4021325.8
+          ]
+        },
+        {
+          "name": "ipi_self_ipi_max_ipi_time",
+          "data": [
+            17270.0
+          ]
+        },
+        {
+          "name": "ipi_self_ipi_total_time",
+          "data": [
+            6888117.6
+          ]
+        },
+        {
+          "name": "ipi_special_cpu_self_ipi_time",
+          "data": [
+            151233751.7
+          ]
+        },
+        {
+          "name": "ipi_special_cpu_self_max_ipi_time",
+          "data": [
+            51238.0
+          ]
+        },
+        {
+          "name": "ipi_special_cpu_self_total_time",
+          "data": [
+            169831924.3
+          ]
+        }
+      ]
+    },
+    "linpack_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "linpack_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "linpack_max_matrix_computing",
+          "data": [
+            121.5299
+          ]
+        }
+      ]
+    },
+    "openssl_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "openssl_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "openssl_aes_128_size_1024",
+          "data": [
+            241435650.0
+          ]
+        },
+        {
+          "name": "openssl_aes_128_size_16",
+          "data": [
+            213028080.0
+          ]
+        },
+        {
+          "name": "openssl_aes_128_size_16384",
+          "data": [
+            241042070.0
+          ]
+        },
+        {
+          "name": "openssl_aes_128_size_256",
+          "data": [
+            237529690.0
+          ]
+        },
+        {
+          "name": "openssl_aes_128_size_64",
+          "data": [
+            236193890.0
+          ]
+        },
+        {
+          "name": "openssl_aes_128_size_8192",
+          "data": [
+            242270210.0
+          ]
+        },
+        {
+          "name": "openssl_aes_192_size_1024",
+          "data": [
+            206421330.0
+          ]
+        },
+        {
+          "name": "openssl_aes_192_size_16",
+          "data": [
+            185682120.0
+          ]
+        },
+        {
+          "name": "openssl_aes_192_size_16384",
+          "data": [
+            207967210.0
+          ]
+        },
+        {
+          "name": "openssl_aes_192_size_256",
+          "data": [
+            204519850.0
+          ]
+        },
+        {
+          "name": "openssl_aes_192_size_64",
+          "data": [
+            200819220.0
+          ]
+        },
+        {
+          "name": "openssl_aes_192_size_8192",
+          "data": [
+            205392550.0
+          ]
+        },
+        {
+          "name": "openssl_aes_256_size_1024",
+          "data": [
+            181242200.0
+          ]
+        },
+        {
+          "name": "openssl_aes_256_size_16",
+          "data": [
+            165263170.0
+          ]
+        },
+        {
+          "name": "openssl_aes_256_size_16384",
+          "data": [
+            180136620.0
+          ]
+        },
+        {
+          "name": "openssl_aes_256_size_256",
+          "data": [
+            181933060.0
+          ]
+        },
+        {
+          "name": "openssl_aes_256_size_64",
+          "data": [
+            179629310.0
+          ]
+        },
+        {
+          "name": "openssl_aes_256_size_8192",
+          "data": [
+            181898020.0
+          ]
+        },
+        {
+          "name": "openssl_md5_size_1024",
+          "data": [
+            666461530.0
+          ]
+        },
+        {
+          "name": "openssl_md5_size_16",
+          "data": [
+            141877200.0
+          ]
+        },
+        {
+          "name": "openssl_md5_size_16384",
+          "data": [
+            717307900.0
+          ]
+        },
+        {
+          "name": "openssl_md5_size_256",
+          "data": [
+            542258090.0
+          ]
+        },
+        {
+          "name": "openssl_md5_size_64",
+          "data": [
+            313156610.0
+          ]
+        },
+        {
+          "name": "openssl_md5_size_8192",
+          "data": [
+            713788070.0
+          ]
+        },
+        {
+          "name": "openssl_sha1_size_1024",
+          "data": [
+            798796800.0
+          ]
+        },
+        {
+          "name": "openssl_sha1_size_16",
+          "data": [
+            148318180.0
+          ]
+        },
+        {
+          "name": "openssl_sha1_size_16384",
+          "data": [
+            880929450.0
+          ]
+        },
+        {
+          "name": "openssl_sha1_size_256",
+          "data": [
+            615514580.0
+          ]
+        },
+        {
+          "name": "openssl_sha1_size_64",
+          "data": [
+            336050410.0
+          ]
+        },
+        {
+          "name": "openssl_sha1_size_8192",
+          "data": [
+            878815290.0
+          ]
+        },
+        {
+          "name": "openssl_sha256_size_1024",
+          "data": [
+            375094950.0
+          ]
+        },
+        {
+          "name": "openssl_sha256_size_16",
+          "data": [
+            82544260.0
+          ]
+        },
+        {
+          "name": "openssl_sha256_size_16384",
+          "data": [
+            402958730.0
+          ]
+        },
+        {
+          "name": "openssl_sha256_size_256",
+          "data": [
+            308977150.0
+          ]
+        },
+        {
+          "name": "openssl_sha256_size_64",
+          "data": [
+            174317290.0
+          ]
+        },
+        {
+          "name": "openssl_sha256_size_8192",
+          "data": [
+            401143130.0
+          ]
+        },
+        {
+          "name": "openssl_sha512_size_1024",
+          "data": [
+            533549740.0
+          ]
+        },
+        {
+          "name": "openssl_sha512_size_16",
+          "data": [
+            57292720.0
+          ]
+        },
+        {
+          "name": "openssl_sha512_size_16384",
+          "data": [
+            617068560.0
+          ]
+        },
+        {
+          "name": "openssl_sha512_size_256",
+          "data": [
+            371918510.0
+          ]
+        },
+        {
+          "name": "openssl_sha512_size_64",
+          "data": [
+            229094060.0
+          ]
+        },
+        {
+          "name": "openssl_sha512_size_8192",
+          "data": [
+            610579800.0
+          ]
+        },
+        {
+          "name": "openssl_rsa_size_1024_sign",
+          "data": [
+            10229.7
+          ]
+        },
+        {
+          "name": "openssl_rsa_size_1024_verify",
+          "data": [
+            171129.4
+          ]
+        },
+        {
+          "name": "openssl_rsa_size_2048_sign",
+          "data": [
+            1574.3
+          ]
+        },
+        {
+          "name": "openssl_rsa_size_2048_verify",
+          "data": [
+            53883.7
+          ]
+        },
+        {
+          "name": "openssl_rsa_size_4096_sign",
+          "data": [
+            230.9
+          ]
+        },
+        {
+          "name": "openssl_rsa_size_4096_verify",
+          "data": [
+            14902.9
+          ]
+        }
+      ]
+    },
+    "perf_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "perf_bench_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "perf_bench_hash_avg",
+          "data": [
+            1188522.3333
+          ]
+        },
+        {
+          "name": "perf_bench_hash_max",
+          "data": [
+            1222963.0
+          ]
+        },
+        {
+          "name": "perf_bench_hash_min",
+          "data": [
+            1157017.0
+          ]
+        },
+        {
+          "name": "perf_bench_lock_pi_avg",
+          "data": [
+            3259.0
+          ]
+        },
+        {
+          "name": "perf_bench_messaging_avg",
+          "data": [
+            0.4881
+          ]
+        },
+        {
+          "name": "perf_bench_pipe_average",
+          "data": [
+            16.1259
+          ]
+        },
+        {
+          "name": "perf_bench_requeued_avg",
+          "data": [
+            0.0049
+          ]
+        },
+        {
+          "name": "perf_bench_wake_avg",
+          "data": [
+            0.013
+          ]
+        },
+        {
+          "name": "perf_bench_wake_parallel_avg",
+          "data": [
+            0.0162
+          ]
+        }
+      ]
+    },
+    "redis_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "redis_single_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "redis_client_get",
+          "data": [
+            555037.405
+          ]
+        },
+        {
+          "name": "redis_client_hset",
+          "data": [
+            422756.48
+          ]
+        },
+        {
+          "name": "redis_client_incr",
+          "data": [
+            1099284.75
+          ]
+        },
+        {
+          "name": "redis_client_lpush",
+          "data": [
+            425203.97
+          ]
+        },
+        {
+          "name": "redis_client_sadd",
+          "data": [
+            1247742.685
+          ]
+        },
+        {
+          "name": "redis_client_set",
+          "data": [
+            436126.16
+          ]
+        }
+      ]
+    },
+    "stress_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "stress_ng_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "stress_ng_cpu_ackermann",
+          "data": [
+            246381.0
+          ]
+        },
+        {
+          "name": "stress_ng_cpu_bitops",
+          "data": [
+            553015.0
+          ]
+        },
+        {
+          "name": "stress_ng_cpu_callfunc",
+          "data": [
+            156432036.0
+          ]
+        },
+        {
+          "name": "stress_ng_cpu_double",
+          "data": [
+            2215828.0
+          ]
+        },
+        {
+          "name": "stress_ng_cpu_float",
+          "data": [
+            4982012.0
+          ]
+        },
+        {
+          "name": "stress_ng_cpu_int32",
+          "data": [
+            10923965.0
+          ]
+        },
+        {
+          "name": "stress_ng_cpu_int64",
+          "data": [
+            10164201.0
+          ]
+        },
+        {
+          "name": "stress_ng_cpu_loop",
+          "data": [
+            5135830.0
+          ]
+        },
+        {
+          "name": "stress_ng_cpu_pi",
+          "data": [
+            91927428.0
+          ]
+        },
+        {
+          "name": "stress_ng_cpu_prime",
+          "data": [
+            72198.0
+          ]
+        },
+        {
+          "name": "stress_ng_cpu_sqrt",
+          "data": [
+            702747.0
+          ]
+        },
+        {
+          "name": "stress_ng_ops",
+          "data": [
+            202996.0
+          ]
+        },
+        {
+          "name": "stress_ng_real_time_ops_per_s",
+          "data": [
+            3383.08
+          ]
+        },
+        {
+          "name": "stress_ng_usr_sys_time_ops_per_s",
+          "data": [
+            936.67
+          ]
+        }
+      ]
+    },
+    "super_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "super_pi_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "super_pi_real_time",
+          "data": [
+            15.207
+          ]
+        },
+        {
+          "name": "super_pi_sys_time",
+          "data": [
+            0.004
+          ]
+        },
+        {
+          "name": "super_pi_user_time",
+          "data": [
+            15.189
+          ]
+        }
+      ]
+    },
+    "unixbench_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "unixbench_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "unixbench_context",
+          "data": [
+            174767.0
+          ]
+        },
+        {
+          "name": "unixbench_cpu",
+          "data": [
+            7436.0
+          ]
+        },
+        {
+          "name": "unixbench_floating_score",
+          "data": [
+            1151.25
+          ]
+        },
+        {
+          "name": "unixbench_int_cpu",
+          "data": [
+            48946614.0
+          ]
+        },
+        {
+          "name": "unixbench_n1_floating_point",
+          "data": [
+            1140.77
+          ]
+        },
+        {
+          "name": "unixbench_n2_floating_point",
+          "data": [
+            1297.7
+          ]
+        },
+        {
+          "name": "unixbench_n4_fixed_point",
+          "data": [
+            1953799091.31
+          ]
+        },
+        {
+          "name": "unixbench_n5_sin_cos_etc",
+          "data": [
+            196.42
+          ]
+        },
+        {
+          "name": "unixbench_n6_floating_point",
+          "data": [
+            1030.7
+          ]
+        },
+        {
+          "name": "unixbench_n7_assignments",
+          "data": [
+            4067.83
+          ]
+        },
+        {
+          "name": "unixbench_n8_exp_sqrt_etc",
+          "data": [
+            157.15
+          ]
+        }
+      ]
+    },
+    "vray_performance": {
+      "chart_type": "bar",
+      "xAxis": {
+        "data": [
+          "vray_baseline"
+        ]
+      },
+      "series": [
+        {
+          "name": "vray_render_time",
+          "data": [
+            349.0
+          ]
+        }
+      ]
+    }
+  },
+  "diagnosis_hints": {
+    "super_pi_baseline/super_pi_real_time[scale=5000]": {
+      "value": 15.207,
+      "unit": "second"
+    },
+    "super_pi_baseline/super_pi_sys_time[scale=5000]": {
+      "value": 0.004,
+      "unit": "second"
+    },
+    "super_pi_baseline/super_pi_user_time[scale=5000]": {
+      "value": 15.189,
+      "unit": "second"
+    },
+    "vray_baseline/vray_render_time[mode=cpu]": {
+      "value": 349.0,
+      "unit": "second"
+    },
+    "contextswitch_baseline/contextswitch_default_ctx": {
+      "value": 3475.82,
+      "unit": "ns"
+    },
+    "contextswitch_baseline/contextswitch_same_core_ctx": {
+      "value": 2699.14,
+      "unit": "ns"
+    },
+    "contextswitch_baseline/contextswitch_same_node_ctx": {
+      "value": 3491.14,
+      "unit": "ns"
+    },
+    "contextswitch_baseline/contextswitch_systemcall": {
+      "value": 408.227,
+      "unit": "ns"
+    },
+    "ffmpeg_baseline/ffmpeg_fps[processor=cpu]": {
+      "value": 10.0,
+      "unit": "fps"
+    },
+    "unixbench_baseline/unixbench_context[gcc_oflag=O0,threads=4]": {
+      "value": 378428.0,
+      "unit": "score"
+    },
+    "unixbench_baseline/unixbench_cpu[gcc_oflag=O3,threads=1]": {
+      "value": 7455.0,
+      "unit": "score"
+    },
+    "unixbench_baseline/unixbench_int_cpu[gcc_oflag=O3,threads=1]": {
+      "value": 48084322.0,
+      "unit": "score"
+    },
+    "unixbench_baseline/unixbench_cpu[gcc_oflag=O0,threads=4]": {
+      "value": 10994.0,
+      "unit": "score"
+    },
+    "unixbench_baseline/unixbench_int_cpu[gcc_oflag=O0,threads=4]": {
+      "value": 37253977.0,
+      "unit": "score"
+    },
+    "unixbench_baseline/unixbench_context[gcc_oflag=O3,threads=4]": {
+      "value": 379420.0,
+      "unit": "score"
+    },
+    "unixbench_baseline/unixbench_cpu[gcc_oflag=O3,threads=4]": {
+      "value": 24494.0,
+      "unit": "score"
+    },
+    "unixbench_baseline/unixbench_int_cpu[gcc_oflag=O3,threads=4]": {
+      "value": 97893205.0,
+      "unit": "score"
+    },
+    "linpack_baseline/linpack_max_matrix_computing": {
+      "value": 121.5299,
+      "unit": "GFlops"
+    },
+    "core_latency_baseline/core_latency_lite_same_latency_avg": {
+      "value": 22.508,
+      "unit": "ns"
+    },
+    "core_latency_baseline/core_latency_lite_same_latency_max": {
+      "value": 30.325,
+      "unit": "ns"
+    },
+    "core_latency_baseline/core_latency_lite_same_latency_min": {
+      "value": 10.8875,
+      "unit": "ns"
+    },
+    "core_latency_baseline/core_latency_lite_same_latency_stdev": {
+      "value": 6.792,
+      "unit": "ns"
+    },
+    "compress_baseline/compress_mips[dictionary=27;thread=single]": {
+      "value": 3821.0,
+      "unit": "MIPS"
+    },
+    "compress_baseline/compress_uncompress_mips[dictionary=27;thread=single]": {
+      "value": 3714.0,
+      "unit": "MIPS"
+    },
+    "compress_baseline/compress_mips[dictionary=27;thread=multi]": {
+      "value": 3696.0,
+      "unit": "MIPS"
+    },
+    "compress_baseline/compress_uncompress_mips[dictionary=27;thread=multi]": {
+      "value": 2697.0,
+      "unit": "MIPS"
+    },
+    "ipi_baseline/ipi_broadcast_ipi_total_time": {
+      "value": 617712577.0,
+      "unit": "ns"
+    },
+    "ipi_baseline/ipi_broadcast_lock_total_time": {
+      "value": 623876442.3,
+      "unit": "ns"
+    },
+    "ipi_baseline/ipi_dry_run_total_time": {
+      "value": 202191.0,
+      "unit": "ns"
+    },
+    "ipi_baseline/ipi_self_ipi_ipi_time": {
+      "value": 4021325.8,
+      "unit": "ns"
+    },
+    "ipi_baseline/ipi_self_ipi_total_time": {
+      "value": 6888117.6,
+      "unit": "ns"
+    },
+    "ipi_baseline/ipi_special_cpu_self_ipi_time": {
+      "value": 151233751.7,
+      "unit": "ns"
+    },
+    "ipi_baseline/ipi_special_cpu_self_total_time": {
+      "value": 169831924.3,
+      "unit": "ns"
+    },
+    "redis_single_baseline/redis_client_get[version=7.4.1]": {
+      "value": 555037.405,
+      "unit": "rps"
+    },
+    "redis_single_baseline/redis_client_hset[version=7.4.1]": {
+      "value": 422756.48,
+      "unit": "rps"
+    },
+    "redis_single_baseline/redis_client_incr[version=7.4.1]": {
+      "value": 1099284.75,
+      "unit": "rps"
+    },
+    "redis_single_baseline/redis_client_lpush[version=7.4.1]": {
+      "value": 425203.97,
+      "unit": "rps"
+    },
+    "redis_single_baseline/redis_client_sadd[version=7.4.1]": {
+      "value": 1247742.685,
+      "unit": "rps"
+    },
+    "redis_single_baseline/redis_client_set[version=7.4.1]": {
+      "value": 436126.16,
+      "unit": "rps"
+    },
+    "perf_bench_baseline/perf_bench_hash_avg[test_type=futex]": {
+      "value": 1188522.3333,
+      "unit": "ops"
+    },
+    "perf_bench_baseline/perf_bench_lock_pi_avg[test_type=futex]": {
+      "value": 3259.0,
+      "unit": "ops"
+    },
+    "perf_bench_baseline/perf_bench_messaging_avg[test_type=sched]": {
+      "value": 0.4881,
+      "unit": "second"
+    },
+    "perf_bench_baseline/perf_bench_pipe_average[test_type=sched]": {
+      "value": 16.1259,
+      "unit": "second"
+    },
+    "openssl_baseline/openssl_aes_128_size_1024": {
+      "value": 241435650.0,
+      "unit": "ops"
+    },
+    "openssl_baseline/openssl_aes_256_size_1024": {
+      "value": 181242200.0,
+      "unit": "ops"
+    },
+    "openssl_baseline/openssl_md5_size_1024": {
+      "value": 666461530.0,
+      "unit": "ops"
+    },
+    "openssl_baseline/openssl_sha256_size_1024": {
+      "value": 375094950.0,
+      "unit": "ops"
+    },
+    "openssl_baseline/openssl_rsa_size_2048_sign": {
+      "value": 1574.3,
+      "unit": "ops"
+    },
+    "openssl_baseline/openssl_rsa_size_2048_verify": {
+      "value": 53883.7,
+      "unit": "ops"
+    },
+    "stress_ng_baseline/stress_ng_ops[cores_num=0;model=cpu;timeout=60]": {
+      "value": 202996.0,
+      "unit": "ops"
+    },
+    "stress_ng_baseline/stress_ng_ops[cores_num=0;model=crypt;timeout=60]": {
+      "value": 23412.0,
+      "unit": "ops"
+    },
+    "stress_ng_baseline/stress_ng_ops[cores_num=0;model=urandom;timeout=60]": {
+      "value": 5450842.0,
+      "unit": "ops"
+    },
+    "stress_ng_baseline/stress_ng_ops[cores_num=0;model=zlib;timeout=60]": {
+      "value": 7200.0,
+      "unit": "ops"
+    },
+    "hackbench_baseline/hackbench_time": {
+      "value": 40.952,
+      "unit": "s",
+      "desc": "进程调度延迟"
+    }
+  },
+  "analysis_summary": {
+    "chart_count": 14,
+    "test_count": 14,
+    "metric_count": 334,
+    "charts": [
+      "compress_performance(1场景/2指标)",
+      "contextswitch_performance(1场景/8指标)",
+      "core_performance(1场景/4指标)",
+      "ffmpeg_performance(1场景/1指标)",
+      "hackbench_performance(1场景/1指标)",
+      "ipi_performance(1场景/12指标)",
+      "linpack_performance(1场景/1指标)",
+      "openssl_performance(1场景/194指标)",
+      "perf_performance(1场景/21指标)",
+      "redis_performance(1场景/6指标)",
+      "stress_performance(1场景/68指标)",
+      "super_performance(1场景/3指标)",
+      "unixbench_performance(1场景/12指标)",
+      "vray_performance(1场景/1指标)"
+    ],
+    "note": "已生成 14 个解耦图表，共 334 项指标"
+  }
+}

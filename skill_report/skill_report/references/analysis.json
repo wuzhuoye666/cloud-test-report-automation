@@ -1,0 +1,183 @@
+{
+  "diff_percent_chart": {
+    "chart_type": "bar",
+    "title": "jvsclaw vs Ark_lightweight — 各指标差异百分比（正数表示 B 更好）",
+    "xAxis": {
+      "data": [
+        "Redis GET 吞吐",
+        "super_pi 单核耗时",
+        "Linpack 浮点峰值",
+        "stress-ng 整型吞吐",
+        "压缩吞吐",
+        "进程调度延迟",
+        "核内访存平均延迟",
+        "上下文切换中位延迟",
+        "视频编解码吞吐",
+        "V-Ray 渲染耗时"
+      ]
+    },
+    "yAxis": {
+      "name": "差异 %",
+      "type": "value"
+    },
+    "series": [
+      {
+        "name": "jvsclaw 相对 Ark_lightweight 优势 %",
+        "type": "bar",
+        "data": [
+          {
+            "value": -32.33,
+            "metric": "redis_client_get",
+            "verdict": "显著落后于 A"
+          },
+          {
+            "value": 5.81,
+            "metric": "super_pi_real_time",
+            "verdict": "优于 A"
+          },
+          {
+            "value": 67.28,
+            "metric": "linpack_max_matrix_computing",
+            "verdict": "大幅领先 A"
+          },
+          {
+            "value": 44.29,
+            "metric": "stress_ng_cpu_ackermann",
+            "verdict": "显著超越 A"
+          },
+          {
+            "value": 2061.4,
+            "metric": "compress_mips",
+            "verdict": "大幅领先 A"
+          },
+          {
+            "value": 3.75,
+            "metric": "hackbench_time",
+            "verdict": "略优于 A"
+          },
+          {
+            "value": -62.89,
+            "metric": "core_latency_lite_same_latency_avg",
+            "verdict": "大幅落后于 A"
+          },
+          {
+            "value": -59.09,
+            "metric": "contextswitch_lat_med",
+            "verdict": "大幅落后于 A"
+          },
+          {
+            "value": 66.67,
+            "metric": "ffmpeg_fps",
+            "verdict": "大幅领先 A"
+          },
+          {
+            "value": 39.3,
+            "metric": "vray_render_time",
+            "verdict": "显著超越 A"
+          }
+        ]
+      }
+    ]
+  },
+  "raw_value_chart": {
+    "chart_type": "grouped_bar",
+    "title": "A/B 原始值对比",
+    "xAxis": {
+      "data": [
+        "Redis GET 吞吐",
+        "super_pi 单核耗时",
+        "Linpack 浮点峰值",
+        "stress-ng 整型吞吐",
+        "压缩吞吐",
+        "进程调度延迟",
+        "核内访存平均延迟",
+        "上下文切换中位延迟",
+        "视频编解码吞吐",
+        "V-Ray 渲染耗时"
+      ]
+    },
+    "series": [
+      {
+        "name": "Ark_lightweight",
+        "type": "bar",
+        "data": [
+          820164.94,
+          16.145,
+          72.6499,
+          170752.0,
+          171.0,
+          42.549,
+          13.818,
+          2184.8,
+          6.0,
+          575.0
+        ]
+      },
+      {
+        "name": "jvsclaw",
+        "type": "bar",
+        "data": [
+          555037.405,
+          15.207,
+          121.5299,
+          246381.0,
+          3696.0,
+          40.952,
+          22.508,
+          3475.82,
+          10.0,
+          349.0
+        ]
+      }
+    ]
+  },
+  "radar_chart": {
+    "chart_type": "radar",
+    "title": "CPU 微架构雷达图（A vs B）",
+    "radar": {
+      "indicator": [
+        {
+          "name": "线性代数(Linpack)",
+          "max": 300
+        },
+        {
+          "name": "整型吞吐(stress-ng)",
+          "max": 600000
+        },
+        {
+          "name": "压缩性能(MIPS)",
+          "max": 8000
+        },
+        {
+          "name": "单核耗时(super_pi)",
+          "max": 30
+        }
+      ]
+    },
+    "series": [
+      {
+        "type": "radar",
+        "data": [
+          {
+            "name": "Ark_lightweight",
+            "value": [
+              72.6499,
+              170752.0,
+              171.0,
+              13.855
+            ]
+          },
+          {
+            "name": "jvsclaw",
+            "value": [
+              121.5299,
+              246381.0,
+              3696.0,
+              14.793
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
