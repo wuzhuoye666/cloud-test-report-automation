@@ -1,3 +1,58 @@
 # Binary archives
 *.tar.gz
 *.zip
+
+# ===== 环境变量与密钥 =====
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 虚拟环境
+venv/
+.venv/
+env/
+ENV/
+
+# 打包与构建
+build/
+dist/
+*.egg-info/
+*.egg
+
+# 测试与覆盖率
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ===== 数据库与日志 =====
+*.sqlite
+*.sqlite3
+*.db
+*.log
+logs/
+
+# ===== 输出目录 =====
+output/
+outputs/
+temp/
+tmp/
+
+# ===== IDE 配置 =====
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== 操作系统 =====
+.DS_Store
+Thumbs.db
+desktop.ini
