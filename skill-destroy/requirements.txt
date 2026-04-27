@@ -1,0 +1,6 @@
+# 百度智能云 BCC 云服务器管理工具依赖
+# 安装命令: pip install -r requirements.txt
+
+# 百度智能云 Python SDK (核心依赖)
+# 包含所有百度云服务的客户端库
+bce-python-sdk>=0.8.27
