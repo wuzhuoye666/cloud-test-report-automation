@@ -1,2 +1,0 @@
-bce-python-sdk==0.9.70
-python-dotenv==1.2.2
