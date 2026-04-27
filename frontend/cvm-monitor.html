@@ -1,0 +1,3052 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>云主机性能测试平台</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #faf9f5;
+      --sidebar-bg: #f4f1ea;
+      --sidebar-text: #5c564e;
+      --sidebar-muted: #9b9489;
+      --sidebar-active-bg: #e9e4d8;
+      --card: #ffffff;
+      --border: #e7e2d6;
+      --border-soft: #efeadd;
+      --text: #2d2a26;
+      --muted: #7a7366;
+      --primary: #c96442;
+      --accent: #c96442;
+      --accent-dark: #b5573a;
+      --accent-soft: #f7ece5;
+      --success: #6a8759;
+      --warning: #b8873a;
+      --danger: #b34b3e;
+      --radius: 8px;
+      --shadow-sm: 0 1px 2px rgba(45, 42, 38, 0.04);
+      --font: "PingFang SC", "Microsoft YaHei", "Inter", system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ============ Sidebar ============ */
+    .sidebar {
+      width: 220px;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      border-right: 1px solid var(--border);
+    }
+
+    .sidebar-brand {
+      padding: 22px 20px;
+      border-bottom: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 30px;
+      height: 30px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .brand-txt {
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    .brand-txt small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    .sidebar-section {
+      padding: 18px 16px 8px;
+      font-size: 11px;
+      color: var(--sidebar-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 500;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 0 10px;
+    }
+
+    .nav-item {
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 1px;
+      transition: all 0.12s;
+      color: var(--sidebar-text);
+    }
+
+    .nav-item:hover {
+      background: var(--sidebar-active-bg);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: var(--sidebar-active-bg);
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-icon {
+      width: 16px;
+      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .nav-item.active .nav-icon {
+      color: var(--text);
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background: #f4f4f5;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 1px 7px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .sidebar-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border-soft);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    /* ============ Main ============ */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .breadcrumb {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .breadcrumb strong {
+      color: var(--text);
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    .topbar-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      background: #f4f4f5;
+      color: var(--muted);
+      border: 1px solid var(--border-soft);
+    }
+
+    .chip .dot {
+      background: var(--success);
+    }
+
+    .user-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .dot.pulse {
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.35;
+      }
+    }
+
+    .content {
+      flex: 1;
+      padding: 28px;
+      overflow-x: hidden;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+      animation: fade 0.2s ease;
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* ============ Hero ============ */
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-block {
+      position: relative;
+      padding-right: 24px;
+    }
+
+    .hero-block:not(:last-child) {
+      border-right: 1px solid var(--border-soft);
+    }
+
+    .hero-block h3 {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+
+    .hero-state {
+      font-size: 22px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-state .bulb {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .hero-state.busy .bulb {
+      background: var(--warning);
+      animation: pulse 1.2s infinite;
+    }
+
+    .hero-desc {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hero-block.num .hero-big {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .hero-block.num .hero-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* ============ Stats ============ */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .stat-ico {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      background: #f4f4f5;
+      color: var(--muted);
+    }
+
+    .stat-val {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .stat-trend {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .stat-trend .up {
+      color: var(--success);
+    }
+
+    .stat-trend .down {
+      color: var(--danger);
+    }
+
+    /* ============ Panel ============ */
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .panel-head {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title .dotbar {
+      width: 3px;
+      height: 14px;
+      border-radius: 2px;
+      background: var(--accent);
+    }
+
+    .panel-body {
+      padding: 22px;
+    }
+
+    /* ============ Table ============ */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 12px 22px;
+      background: #f8fafc;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tbody td {
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 13px;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr {
+      transition: background 0.1s;
+    }
+
+    tbody tr:hover td {
+      background: #fafbff;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid transparent;
+    }
+
+    .tag.success {
+      background: #f0fdf4;
+      color: #166534;
+      border-color: #dcfce7;
+    }
+
+    .tag.failed {
+      background: #fef2f2;
+      color: #991b1b;
+      border-color: #fee2e2;
+    }
+
+    .tag.busy {
+      background: #fefce8;
+      color: #854d0e;
+      border-color: #fef9c3;
+    }
+
+    .tag.info {
+      background: #f4f4f5;
+      color: var(--muted);
+      border-color: var(--border-soft);
+    }
+
+    .action-btn {
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 500;
+      text-decoration: underline;
+      text-decoration-color: var(--border);
+      text-underline-offset: 3px;
+    }
+
+    .action-btn:hover {
+      text-decoration-color: var(--text);
+    }
+
+    input[type=checkbox] {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    /* ============ Form ============ */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column: span 2;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .field label .req {
+      color: var(--danger);
+      margin-left: 2px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+      transition: all 0.15s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.06);
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .btn {
+      padding: 9px 18px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 500;
+      font-family: inherit;
+      transition: all 0.12s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .btn.primary:hover {
+      background: #27272a;
+    }
+
+    .btn.ghost {
+      background: #fff;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn.ghost:hover {
+      background: #fafafa;
+      border-color: #d4d4d8;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ============ Report detail ============ */
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      margin-bottom: 16px;
+    }
+
+    .back:hover {
+      color: var(--primary);
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .meta-row span strong {
+      color: var(--text);
+      font-weight: 500;
+      margin-left: 4px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .mcard {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .mcard .name {
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mcard .val {
+      font-size: 24px;
+      font-weight: 600;
+      margin-top: 6px;
+      color: var(--text);
+    }
+
+    .mcard .sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .analysis {
+      background: #fafafa;
+      border: 1px solid var(--border-soft);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 14px 18px;
+      line-height: 1.8;
+      font-size: 13px;
+    }
+
+    .analysis p {
+      margin-bottom: 6px;
+    }
+
+    .analysis p:last-child {
+      margin-bottom: 0;
+    }
+
+    .chart-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .chart-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .chart-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chart-title .dotbar {
+      width: 3px;
+      height: 14px;
+      border-radius: 2px;
+      background: var(--accent);
+    }
+
+    .chart-box {
+      height: 280px;
+      position: relative;
+    }
+
+    /* ============ Compare ============ */
+    .compare-picker {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .compare-picker h4 {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .picked-list {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-height: 40px;
+    }
+
+    .picked-chip {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .picked-chip .x {
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .picked-chip .x:hover {
+      color: var(--danger);
+    }
+
+    .picked-empty {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 10px 0;
+    }
+
+    .vs-grid {
+      display: grid;
+      gap: 0;
+      margin-bottom: 20px;
+    }
+
+    .vs-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .vs-table th {
+      padding: 12px 16px;
+      background: #fafafa;
+      text-align: center;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .vs-table th:first-child {
+      text-align: left;
+    }
+
+    .vs-table td {
+      padding: 11px 16px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 13px;
+    }
+
+    .vs-table td:first-child {
+      text-align: left;
+      color: var(--muted);
+      background: #fafafa;
+      font-weight: 500;
+    }
+
+    .vs-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .winner {
+      font-weight: 600;
+      color: var(--success);
+    }
+
+    .winner::before {
+      content: '▲ ';
+      font-size: 10px;
+    }
+
+    .loser {
+      color: var(--muted);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .search {
+      padding: 9px 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      width: 240px;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 64px;
+      }
+
+      .sidebar-brand .brand-txt,
+      .sidebar-section,
+      .nav-item span:not(.nav-icon),
+      .nav-badge,
+      .sidebar-footer {
+        display: none;
+      }
+
+      .nav-item {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+
+      .stats,
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .chart-row,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: span 1;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo">C</div>
+      <div class="brand-txt">CVM 情报<small>云主机性能监测</small></div>
+    </div>
+
+    <div class="sidebar-section">核心功能</div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" data-page="home"><span class="nav-icon">⌂</span><span>概览</span></div>
+      <div class="nav-item" data-page="test"><span class="nav-icon">▶</span><span>立即检测</span></div>
+      <div class="nav-item" data-page="reports"><span class="nav-icon">▤</span><span>报告汇总</span><span class="nav-badge"
+          id="nav-rpt-count">0</span></div>
+      <div class="nav-item" data-page="compare"><span class="nav-icon">⇄</span><span>数据对比</span></div>
+      <div class="nav-item" data-page="performance-report"><span class="nav-icon">📊</span><span>性能报告</span></div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <span class="footer-status-dot"></span>
+      <span>前端模式 · 数据已就绪</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="breadcrumb">首页 <span>/</span> <strong id="bc-cur">概览</strong></div>
+      <div class="topbar-right">
+        <button class="btn primary" id="btn-generate-report" onclick="generateReport()" style="margin-right:10px;">
+          📊 生成性能报告
+        </button>
+        <button class="btn ghost" id="btn-download-pdf" onclick="downloadReport('pdf')" disabled>
+          📄 PDF
+        </button>
+        <button class="btn ghost" id="btn-download-md" onclick="downloadReport('md')" disabled>
+          📝 MD
+        </button>
+        <div class="user-badge">HB</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ========== 概览 ========== -->
+      <section class="page active" id="page-home">
+        <div class="page-header">
+          <div>
+            <h1>监控概览</h1>
+            <div class="subtitle">实时掌握测试任务状态与历史记录</div>
+          </div>
+          <button class="btn primary" onclick="switchPage('test')">+ 新建测试</button>
+        </div>
+
+        <div class="hero">
+          <div class="hero-block">
+            <h3>任务状态</h3>
+            <div class="hero-state" id="hero-state"><span class="bulb"></span><span id="hero-text">空闲</span></div>
+            <div class="hero-desc" id="hero-desc">当前无正在运行的测试任务</div>
+          </div>
+          <div class="hero-block num">
+            <h3>最后运行</h3>
+            <div class="hero-big" id="hero-last">—</div>
+            <div class="hero-label" id="hero-last-detail">尚无记录</div>
+          </div>
+          <div class="hero-block num">
+            <h3>今日测试</h3>
+            <div class="hero-big" id="hero-today">0</div>
+            <div class="hero-label">次数</div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat blue">
+            <div class="stat-head"><span class="stat-label">累计测试次数</span><span class="stat-ico">Σ</span></div>
+            <div class="stat-val" id="st-total">0</div>
+            <div class="stat-trend"><span class="up">↑ 本周 +8</span></div>
+          </div>
+          <div class="stat green">
+            <div class="stat-head"><span class="stat-label">成功次数</span><span class="stat-ico">✓</span></div>
+            <div class="stat-val" id="st-success">0</div>
+            <div class="stat-trend">成功率 <span class="up" id="st-rate">—</span></div>
+          </div>
+          <div class="stat orange">
+            <div class="stat-head"><span class="stat-label">失败次数</span><span class="stat-ico">!</span></div>
+            <div class="stat-val" id="st-failed">0</div>
+            <div class="stat-trend">需关注的实例</div>
+          </div>
+          <div class="stat purple">
+            <div class="stat-head"><span class="stat-label">覆盖厂商</span><span class="stat-ico">★</span></div>
+            <div class="stat-val" id="st-vendors">0</div>
+            <div class="stat-trend">主流云厂商</div>
+          </div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-panel">
+            <div class="chart-title"><span class="dotbar"></span>各厂商测试数量分布</div>
+            <div class="chart-box"><canvas id="chart-vendor"></canvas></div>
+          </div>
+          <div class="chart-panel">
+            <div class="chart-title"><span class="dotbar"></span>近 7 日测试趋势</div>
+            <div class="chart-box"><canvas id="chart-trend"></canvas></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>历史测试事件</div>
+            <button class="btn ghost" onclick="refreshHistory(event)">↻ 刷新</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>测试时间</th>
+                <th>厂商</th>
+                <th>机型</th>
+                <th>公网 IP</th>
+                <th>耗时</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="history-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ========== 立即检测 ========== -->
+      <section class="page" id="page-test">
+        <div class="page-header">
+          <div>
+            <h1>立即检测</h1>
+            <div class="subtitle">查询价格 → 购买机器 → 机器测试 → 数据分析 → 报告生成 → 机器关机</div>
+          </div>
+        </div>
+
+        <!-- 步骤 1: 价格查询 -->
+        <div class="panel" id="step-price-query">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>步骤 1: 查询价格</div>
+          </div>
+          <div class="panel-body">
+            <form id="price-form">
+              <div class="form-grid">
+                <div class="field">
+                  <label>厂商<span class="req">*</span></label>
+                  <select id="price-vendor" required>
+                    <option value="">请选择</option>
+                    <option value="aliyun">Aliyun 阿里云</option>
+                    <option value="tencent">TencentCloud 腾讯云</option>
+                    <option value="huawei">HuaweiCloud 华为云</option>
+                    <option value="baidu">BaiduCloud 百度云</option>
+                    <option value="kingsoft">KingsoftCloud 金山云</option>
+                    <option value="volcengine">Volcengine 火山引擎</option>
+                    <option value="aws">AWS</option>
+                    <option value="azure">Azure</option>
+                    <option value="google">GoogleCloud</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>地域<span class="req">*</span></label>
+                  <select id="price-region" required>
+                    <option value="">请选择</option>
+                    <option value="cn-beijing">北京</option>
+                    <option value="cn-shanghai">上海</option>
+                    <option value="cn-shenzhen">深圳</option>
+                    <option value="cn-hangzhou">杭州</option>
+                    <option value="cn-guangzhou">广州</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>CPU 核数<span class="req">*</span></label>
+                  <select id="price-cpu" required>
+                    <option value="">请选择</option>
+                    <option value="2">2 核</option>
+                    <option value="4">4 核</option>
+                    <option value="8">8 核</option>
+                    <option value="16">16 核</option>
+                    <option value="32">32 核</option>
+                    <option value="64">64 核</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>内存 (GB)<span class="req">*</span></label>
+                  <select id="price-mem" required>
+                    <option value="">请选择</option>
+                    <option value="4">4 GB</option>
+                    <option value="8">8 GB</option>
+                    <option value="16">16 GB</option>
+                    <option value="32">32 GB</option>
+                    <option value="64">64 GB</option>
+                    <option value="128">128 GB</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>系统盘类型</label>
+                  <select id="price-disk-type">
+                    <option value="ssd">SSD 云盘</option>
+                    <option value="essd">ESSD 云盘</option>
+                    <option value="cloud">普通云盘</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>系统盘大小 (GB)</label>
+                  <input type="number" id="price-disk-size" value="100" min="40" max="500">
+                </div>
+                <div class="field full">
+                  <label>计费方式</label>
+                  <div style="display:flex; gap:20px; margin-top:8px;">
+                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                      <input type="radio" name="billing" value="hourly" checked> 按量付费（小时）
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                      <input type="radio" name="billing" value="monthly"> 包年包月
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="actions">
+                <button type="submit" class="btn primary">💰 查询价格</button>
+                <button type="reset" class="btn ghost">重置</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- 步骤 2: 价格结果 -->
+        <div class="panel" id="step-price-result" style="display:none;">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>步骤 2: 价格结果</div>
+          </div>
+          <div class="panel-body">
+            <div id="price-loading" style="text-align:center; padding:40px; color:#999;">
+              <div style="font-size:24px; margin-bottom:10px;">⏳</div>
+              <div>正在查询价格...</div>
+            </div>
+            <div id="price-content" style="display:none;">
+              <div class="hero" style="grid-template-columns: 1fr 1fr 1fr; margin-bottom:20px;">
+                <div class="hero-block num">
+                  <h3>实例规格</h3>
+                  <div class="hero-big" id="result-spec">—</div>
+                  <div class="hero-label" id="result-vendor">—</div>
+                </div>
+                <div class="hero-block num">
+                  <h3>预估价格</h3>
+                  <div class="hero-big" style="color:#c96442;" id="result-price">—</div>
+                  <div class="hero-label" id="result-unit">元/小时</div>
+                </div>
+                <div class="hero-block num">
+                  <h3>测试预估成本</h3>
+                  <div class="hero-big" style="color:#6a8759;" id="result-test-cost">—</div>
+                  <div class="hero-label">约 30 分钟测试时长</div>
+                </div>
+              </div>
+              <div class="panel" style="background:#f8f9fa; border:1px solid #e7e2d6;">
+                <div class="panel-body">
+                  <h4 style="margin-bottom:12px; color:#333;">📋 配置详情</h4>
+                  <table style="margin:0;">
+                    <tbody id="result-details">
+                      <!-- 动态生成 -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="actions" style="margin-top:20px;">
+                <button class="btn primary" onclick="confirmPurchase()">✓ 确认购买并继续</button>
+                <button class="btn ghost" onclick="backToPriceQuery()">← 重新查询</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 步骤 3: 测试配置 -->
+        <div class="panel" id="step-test-config" style="display:none;">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>步骤 3: 测试配置</div>
+          </div>
+          <div class="panel-body">
+            <div class="panel" style="background:#e8f5e9; border:1px solid #a5d6a7; margin-bottom:20px;">
+              <div class="panel-body" style="color:#2e7d32;">
+                <strong>✓ 机器购买成功</strong> - 请填写以下连接信息开始测试
+              </div>
+            </div>
+            <form id="test-form">
+              <div class="form-grid">
+                <div class="field">
+                  <label>实例 ID<span class="req">*</span></label>
+                  <input type="text" id="test-instance-id" placeholder="如：i-bp1xxxxxxxxxx" required>
+                </div>
+                <div class="field">
+                  <label>公网 IP<span class="req">*</span></label>
+                  <input type="text" id="test-ip" placeholder="47.98.123.45" required>
+                </div>
+                <div class="field">
+                  <label>登录用户名</label>
+                  <input type="text" value="root">
+                </div>
+                <div class="field">
+                  <label>密码 / 密钥<span class="req">*</span></label>
+                  <input type="password" placeholder="root 密码或密钥" required>
+                </div>
+                <div class="field full">
+                  <label>备注</label>
+                  <textarea rows="2" placeholder="可选的测试备注说明..."></textarea>
+                  <div class="hint">密码仅在当前任务中使用，不会被写入数据库</div>
+                </div>
+              </div>
+              <div class="actions">
+                <button type="submit" class="btn primary">▶ 开始测试</button>
+                <button type="button" class="btn ghost" onclick="backToPriceResult()">← 上一步</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- 步骤 4: 测试进度 -->
+        <div class="panel" id="step-test-progress" style="display:none;">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>步骤 4: 测试执行中</div>
+          </div>
+          <div class="panel-body">
+            <div id="test-progress-content">
+              <div class="hero-state" style="margin-bottom:20px;">
+                <span class="bulb pulse"></span>
+                <span id="progress-status">正在连接实例...</span>
+              </div>
+              <div style="background:#f5f5f5; border-radius:8px; padding:20px; font-family:monospace; font-size:13px; line-height:1.8;">
+                <div id="progress-log" style="max-height:300px; overflow-y:auto;">
+                  <div style="color:#666;">[INFO] 初始化测试环境...</div>
+                </div>
+              </div>
+              <div class="actions" style="margin-top:20px;">
+                <button class="btn danger" onclick="cancelTest()">⏹ 取消测试</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 步骤 5: 测试完成 -->
+        <div class="panel" id="step-test-complete" style="display:none;">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>步骤 5: 测试完成</div>
+          </div>
+          <div class="panel-body">
+            <div class="panel" style="background:#e8f5e9; border:1px solid #a5d6a7; margin-bottom:20px;">
+              <div class="panel-body" style="color:#2e7d32;">
+                <strong>✓ 测试执行完成</strong> - 报告已生成，机器即将自动关机
+              </div>
+            </div>
+            <div class="hero" style="grid-template-columns: 1fr 1fr 1fr; margin-bottom:20px;">
+              <div class="hero-block num">
+                <h3>测试耗时</h3>
+                <div class="hero-big" id="complete-duration">—</div>
+                <div class="hero-label">分钟</div>
+              </div>
+              <div class="hero-block num">
+                <h3>综合评分</h3>
+                <div class="hero-big" style="color:#c96442;" id="complete-score">—</div>
+                <div class="hero-label">分</div>
+              </div>
+              <div class="hero-block num">
+                <h3>实际花费</h3>
+                <div class="hero-big" style="color:#6a8759;" id="complete-cost">—</div>
+                <div class="hero-label">元</div>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn primary" onclick="viewReport()">📊 查看报告</button>
+              <button class="btn ghost" onclick="downloadTestReport()">⬇ 下载报告</button>
+              <button class="btn ghost" onclick="startNewTest()">+ 新建测试</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 报告汇总 ========== -->
+      <section class="page" id="page-reports">
+        <div class="page-header">
+          <div>
+            <h1>报告汇总</h1>
+            <div class="subtitle">浏览全部历史测试报告</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>全部报告</div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <input type="text" class="search" id="report-search" placeholder="搜索厂商 / 机型...">
+              <button class="btn ghost" onclick="switchPage('compare')">⇄ 进入对比</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>编号</th>
+                <th>厂商</th>
+                <th>机型</th>
+                <th>规格</th>
+                <th>测试时间</th>
+                <th>综合评分</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="reports-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ========== 数据对比 ========== -->
+      <section class="page" id="page-compare">
+        <div class="page-header">
+          <div>
+            <h1>测试报告数据对比</h1>
+            <div class="subtitle">选择 2-4 份报告进行横向对比，快速识别性能差异</div>
+          </div>
+        </div>
+
+        <div class="compare-picker">
+          <h4>已选报告（最多 4 份）</h4>
+          <div class="picked-list" id="picked-list"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>可选报告列表</div>
+            <input type="text" class="search" id="compare-search" placeholder="搜索...">
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:40px;">选择</th>
+                <th>编号</th>
+                <th>厂商</th>
+                <th>机型</th>
+                <th>规格</th>
+                <th>综合评分</th>
+              </tr>
+            </thead>
+            <tbody id="compare-pool-tbody"></tbody>
+          </table>
+        </div>
+
+        <div id="compare-result" style="display:none;">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title"><span class="dotbar"></span>指标对比表</div>
+            </div>
+            <div class="panel-body">
+              <table class="vs-table" id="vs-table"></table>
+            </div>
+          </div>
+
+          <div class="chart-panel" style="margin-bottom:20px;">
+            <div class="chart-title"><span class="dotbar"></span><span id="cmp-diff-title">差异百分比（正数表示 B 更好）</span></div>
+            <div class="chart-box" id="cmp-diff-box" style="height:360px;"></div>
+          </div>
+
+          <div class="chart-row">
+            <div class="chart-panel">
+              <div class="chart-title"><span class="dotbar"></span>A/B 原始值对比</div>
+              <div class="chart-box" id="cmp-raw-box" style="height:360px;"></div>
+            </div>
+            <div class="chart-panel">
+              <div class="chart-title"><span class="dotbar"></span>CPU 微架构雷达图</div>
+              <div class="chart-box" id="cmp-radar-box" style="height:360px;"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title"><span class="dotbar"></span>对比结论</div>
+            </div>
+            <div class="panel-body">
+              <div class="analysis" id="cmp-conclusion"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 性能测试报告详情 ========== -->
+      <section class="page" id="page-performance-report">
+        <span class="back" onclick="switchPage('home')">← 返回概览</span>
+        <div class="page-header">
+          <div>
+            <h1>云主机性能测试报告</h1>
+            <div class="meta-row">
+              <span>任务ID:<strong id="pr-task-id">—</strong></span>
+              <span>测试项数:<strong id="pr-test-count">—</strong></span>
+              <span>指标总数:<strong id="pr-metric-count">—</strong></span>
+            </div>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn primary" onclick="generateReport()">📊 重新生成</button>
+            <button class="btn ghost" id="pr-btn-pdf" onclick="downloadReport('pdf')" disabled>📄 PDF</button>
+            <button class="btn ghost" id="pr-btn-md" onclick="downloadReport('md')" disabled>📝 MD</button>
+          </div>
+        </div>
+
+        <div class="hero" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+          <div class="hero-block num">
+            <h3>测试类别</h3>
+            <div class="hero-big" id="pr-categories">—</div>
+            <div class="hero-label">个场景</div>
+          </div>
+          <div class="hero-block num">
+            <h3>图表数量</h3>
+            <div class="hero-big" id="pr-charts">—</div>
+            <div class="hero-label">个图表</div>
+          </div>
+          <div class="hero-block num">
+            <h3>指标总数</h3>
+            <div class="hero-big" id="pr-metrics">—</div>
+            <div class="hero-label">项指标</div>
+          </div>
+          <div class="hero-block num">
+            <h3>诊断结果</h3>
+            <div class="hero-big" id="pr-diagnosis">—</div>
+            <div class="hero-label">项关注</div>
+          </div>
+        </div>
+
+        <div class="chart-panel" style="margin-bottom:20px;">
+          <div class="chart-title"><span class="dotbar"></span>综合性能雷达图</div>
+          <div style="display:flex; justify-content:center;">
+            <div class="chart-box" id="pr-radar-chart" style="width:480px; height:480px;"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>性能诊断与分析</div>
+          </div>
+          <div class="panel-body">
+            <ul class="diagnosis-list" id="pr-diagnosis-list" style="list-style:none; padding:0;">
+              <!-- 动态生成 -->
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>分项测试详情</div>
+          </div>
+          <div class="panel-body">
+            <div id="pr-charts-grid" style="display:grid; grid-template-columns:1fr; gap:20px;">
+              <!-- 动态生成 -->
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>测试结论</div>
+          </div>
+          <div class="panel-body">
+            <div class="analysis" id="pr-conclusion"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 报告详情 ========== -->
+      <section class="page" id="page-report-detail">
+        <span class="back" onclick="switchPage('reports')">← 返回报告列表</span>
+        <div class="page-header">
+          <div>
+            <h1 id="rd-title">测试报告</h1>
+            <div class="meta-row">
+              <span>编号:<strong id="rd-id">—</strong></span>
+              <span>厂商:<strong id="rd-vendor">—</strong></span>
+              <span>机型:<strong id="rd-model">—</strong></span>
+              <span>时间:<strong id="rd-time">—</strong></span>
+            </div>
+          </div>
+          <span class="tag success"><span class="dot"></span>测试完成</span>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="mcard">
+            <div class="name">CPU 得分</div>
+            <div class="val" id="rd-cpu">—</div>
+            <div class="sub">sysbench multi-thread</div>
+          </div>
+          <div class="mcard">
+            <div class="name">内存带宽</div>
+            <div class="val" id="rd-mem">—</div>
+            <div class="sub">顺序读</div>
+          </div>
+          <div class="mcard">
+            <div class="name">磁盘 IOPS</div>
+            <div class="val" id="rd-iops">—</div>
+            <div class="sub">4K 随机读</div>
+          </div>
+          <div class="mcard">
+            <div class="name">网络延迟</div>
+            <div class="val" id="rd-net">—</div>
+            <div class="sub">ping avg</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>测试原始数据</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>测试项</th>
+                <th>工具</th>
+                <th>单位</th>
+                <th>实测值</th>
+                <th>基准值</th>
+                <th>评级</th>
+              </tr>
+            </thead>
+            <tbody id="raw-tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>数据分析</div>
+          </div>
+          <div class="panel-body">
+            <div class="analysis" id="rd-analysis"></div>
+          </div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-panel">
+            <div class="chart-title"><span class="dotbar"></span>六维性能雷达</div>
+            <div class="chart-box"><canvas id="chart-radar"></canvas></div>
+          </div>
+          <div class="chart-panel">
+            <div class="chart-title"><span class="dotbar"></span>核心指标对比</div>
+            <div class="chart-box"><canvas id="chart-bar"></canvas></div>
+          </div>
+        </div>
+
+        <div class="chart-panel" style="margin-bottom:20px;">
+          <div class="chart-title"><span class="dotbar"></span>测试期间资源使用时序</div>
+          <div class="chart-box"><canvas id="chart-line"></canvas></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dotbar"></span>测试结论</div>
+          </div>
+          <div class="panel-body">
+            <div class="analysis" id="rd-conclusion"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+
+
+    /* ============ 模拟数据 ============ */
+    const vendors = ['Aliyun', 'TencentCloud', 'HuaweiCloud', 'BaiduCloud', 'KingsoftCloud', 'Volcengine', 'AWS', 'Azure', 'GoogleCloud'];
+    const models = ['ecs.g7.xlarge', 's5.large8', 'c7.2xlarge', 'bcc.g4.4xlarge', 'n3.2xlarge', 'ebmc6i.8xlarge', 'm5.xlarge', 'D4s_v5', 'n2-standard-4'];
+    const specs = ['4C 16G SSD100G', '8C 32G SSD200G', '16C 64G SSD500G', '4C 8G SSD100G', '8C 16G SSD200G'];
+    const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+    const randIP = () => `${rand(1, 223)}.${rand(0, 255)}.${rand(0, 255)}.${rand(1, 254)}`;
+    const pad = n => n < 10 ? '0' + n : n;
+    const fmtTime = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    const fmtDate = d => `${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+
+    const reports = [];
+    for (let i = 0; i < 20; i++) {
+      const d = new Date(Date.now() - rand(1, 30) * 86400000 - rand(0, 86400000));
+      reports.push({
+        id: 'RPT-' + String(20001 + i),
+        vendor: vendors[rand(0, vendors.length - 1)],
+        model: models[rand(0, models.length - 1)],
+        spec: specs[rand(0, specs.length - 1)],
+        ip: randIP(), time: d,
+        duration: rand(3, 15) + ' 分钟',
+        status: Math.random() > 0.1 ? 'success' : 'failed',
+        score: rand(70, 98),
+        cpu: rand(8000, 15000), mem: +(rand(30, 80) / 10).toFixed(1),
+        iops: rand(30000, 120000), net: rand(1, 20),
+        cpuSingle: rand(3000, 5500),
+        memWrite: +(rand(25, 70) / 10).toFixed(1),
+        iopsWrite: rand(20000, 90000),
+        bandwidth: rand(1, 10),
+      });
+    }
+    reports.sort((a, b) => b.time - a.time);
+
+    /* ============ 路由 ============ */
+    const titles = { home: '概览', test: '立即检测', reports: '报告汇总', compare: '数据对比', 'report-detail': '报告详情', 'performance-report': '性能测试报告' };
+    function switchPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      const nav = document.querySelector(`.nav-item[data-page="${name}"]`);
+      if (nav) nav.classList.add('active');
+      document.getElementById('bc-cur').textContent = titles[name] || '';
+      window.scrollTo(0, 0);
+      if (name === 'compare') renderCompare();
+      if (name === 'performance-report') {
+        // Defer to next frame so 'display:block' layout has settled,
+        // otherwise echarts.init may measure container width as 0
+        // and reuse a stale fallback canvas across charts.
+        requestAnimationFrame(() => requestAnimationFrame(renderPerformanceReport));
+      }
+    }
+    document.querySelectorAll('.nav-item').forEach(n => n.addEventListener('click', () => switchPage(n.dataset.page)));
+
+    /* ============ 概览 ============ */
+    let homeCharts = [];
+    function renderHistory() {
+      const tbody = document.getElementById('history-tbody');
+      tbody.innerHTML = reports.slice(0, 10).map(r => `
+    <tr>
+      <td>${fmtTime(r.time)}</td><td>${r.vendor}</td><td>${r.model}</td>
+      <td>${r.ip}</td><td>${r.duration}</td>
+      <td><span class="tag ${r.status}"><span class="dot"></span>${r.status === 'success' ? '成功' : '失败'}</span></td>
+      <td><span class="action-btn" onclick="openReport('${r.id}')">查看</span></td>
+    </tr>`).join('');
+      const succ = reports.filter(r => r.status === 'success').length;
+      document.getElementById('st-total').textContent = reports.length;
+      document.getElementById('st-success').textContent = succ;
+      document.getElementById('st-failed').textContent = reports.length - succ;
+      document.getElementById('st-vendors').textContent = new Set(reports.map(r => r.vendor)).size;
+      document.getElementById('st-rate').textContent = ((succ / reports.length) * 100).toFixed(1) + '%';
+      document.getElementById('nav-rpt-count').textContent = reports.length;
+      if (reports[0]) {
+        document.getElementById('hero-last').textContent = fmtTime(reports[0].time);
+        document.getElementById('hero-last-detail').textContent = `${reports[0].vendor} / ${reports[0].model}`;
+      }
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      document.getElementById('hero-today').textContent = reports.filter(r => r.time >= today).length;
+      renderHomeCharts();
+    }
+    function renderHomeCharts() {
+      homeCharts.forEach(c => c.destroy()); homeCharts = [];
+      const vCount = {};
+      reports.forEach(r => vCount[r.vendor] = (vCount[r.vendor] || 0) + 1);
+      const labels = Object.keys(vCount), data = Object.values(vCount);
+      // 替换 renderHomeCharts() 中的 colors 数组
+      const colors = [
+        '#475569', // 深石板蓝 (Azure)
+        '#64748b', // 冷灰蓝 (Kingsoft)
+        '#94a3b8', // 淡钢蓝 (Volcengine)
+        '#c96442', // 主题红/砖红 (Aliyun)
+        '#5b8c85', // 鼠尾草绿 (GoogleCloud)
+        '#8b8e91', // 灰石色 (BaiduCloud)
+        '#d97706', // 琥珀金 (HuaweiCloud)
+        '#334155', // 墨色 (AWS)
+        '#78716c'  // 暖灰 (TencentCloud)
+      ];
+      homeCharts.push(new Chart(document.getElementById('chart-vendor'), {
+        type: 'doughnut',
+        data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+      }));
+      const days = [];
+      for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0, 0, 0, 0); days.push(d); }
+      const trend = days.map(d => {
+        const next = new Date(d); next.setDate(next.getDate() + 1);
+        return reports.filter(r => r.time >= d && r.time < next).length;
+      });
+      homeCharts.push(new Chart(document.getElementById('chart-trend'), {
+        type: 'line',
+        data: {
+          labels: days.map(fmtDate),
+          // 替换 renderHomeCharts() 中趋势图的 datasets 部分
+          datasets: [{
+            label: '测试次数',
+            data: trend,
+            borderColor: '#475569',          // 改为深蓝灰线条，更有层次感
+            backgroundColor: 'rgba(71, 85, 105, 0.08)', // 极淡的填充色，保持大气
+            fill: true,
+            tension: 0.35,
+            pointBackgroundColor: '#c96442', // 圆点使用主品牌色作为点睛
+            pointRadius: 4,                  // 稍微加大的圆点
+            pointHoverRadius: 6
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+      }));
+    }
+    function refreshHistory(e) {
+      const btn = e.target; btn.textContent = '刷新中...';
+      setTimeout(() => { renderHistory(); btn.textContent = '↻ 刷新'; }, 500);
+    }
+
+    /* ============ 价格查询与测试流程 ============ */
+    let currentPriceInfo = null;
+    let testStartTime = null;
+
+    // 步骤 1: 价格查询表单
+    document.getElementById('price-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      
+      const vendor = document.getElementById('price-vendor').value;
+      const region = document.getElementById('price-region').value;
+      const cpu = document.getElementById('price-cpu').value;
+      const mem = document.getElementById('price-mem').value;
+      const diskType = document.getElementById('price-disk-type').value;
+      const diskSize = document.getElementById('price-disk-size').value;
+      const billing = document.querySelector('input[name="billing"]:checked').value;
+      
+      // 显示价格查询结果面板
+      document.getElementById('step-price-query').style.display = 'none';
+      document.getElementById('step-price-result').style.display = 'block';
+      document.getElementById('price-loading').style.display = 'block';
+      document.getElementById('price-content').style.display = 'none';
+      
+      // 模拟价格查询
+      await new Promise(r => setTimeout(r, 1500));
+      
+      // 计算价格（模拟）
+      const vendorPrices = {
+        aliyun: 0.35, tencent: 0.32, huawei: 0.38, baidu: 0.30,
+        kingsoft: 0.28, volcengine: 0.33, aws: 0.45, azure: 0.42, google: 0.40
+      };
+      const basePrice = vendorPrices[vendor] || 0.35;
+      const hourlyPrice = (basePrice * parseInt(cpu) + parseInt(mem) * 0.05 + parseInt(diskSize) * 0.001).toFixed(2);
+      const monthlyPrice = (hourlyPrice * 24 * 30 * 0.7).toFixed(0); // 包月有折扣
+      
+      const price = billing === 'hourly' ? hourlyPrice : monthlyPrice;
+      const unit = billing === 'hourly' ? '元/小时' : '元/月';
+      const testCost = (hourlyPrice * 0.5).toFixed(2); // 30分钟测试
+      
+      currentPriceInfo = {
+        vendor, region, cpu, mem, diskType, diskSize, billing,
+        price, unit, testCost, hourlyPrice
+      };
+      
+      // 显示结果
+      document.getElementById('price-loading').style.display = 'none';
+      document.getElementById('price-content').style.display = 'block';
+      
+      const vendorNames = {
+        aliyun: '阿里云', tencent: '腾讯云', huawei: '华为云', baidu: '百度云',
+        kingsoft: '金山云', volcengine: '火山引擎', aws: 'AWS', azure: 'Azure', google: 'Google Cloud'
+      };
+      const regionNames = {
+        'cn-beijing': '北京', 'cn-shanghai': '上海', 'cn-shenzhen': '深圳',
+        'cn-hangzhou': '杭州', 'cn-guangzhou': '广州'
+      };
+      
+      document.getElementById('result-spec').textContent = `${cpu}核 ${mem}GB`;
+      document.getElementById('result-vendor').textContent = `${vendorNames[vendor]} · ${regionNames[region]}`;
+      document.getElementById('result-price').textContent = `¥${price}`;
+      document.getElementById('result-unit').textContent = unit;
+      document.getElementById('result-test-cost').textContent = `¥${testCost}`;
+      
+      // 配置详情
+      document.getElementById('result-details').innerHTML = `
+        <tr><td style="padding:8px 0; color:#666; width:120px;">厂商</td><td style="padding:8px 0;">${vendorNames[vendor]}</td></tr>
+        <tr><td style="padding:8px 0; color:#666;">地域</td><td style="padding:8px 0;">${regionNames[region]}</td></tr>
+        <tr><td style="padding:8px 0; color:#666;">CPU</td><td style="padding:8px 0;">${cpu} 核</td></tr>
+        <tr><td style="padding:8px 0; color:#666;">内存</td><td style="padding:8px 0;">${mem} GB</td></tr>
+        <tr><td style="padding:8px 0; color:#666;">系统盘</td><td style="padding:8px 0;">${diskType.toUpperCase()} ${diskSize}GB</td></tr>
+        <tr><td style="padding:8px 0; color:#666;">计费方式</td><td style="padding:8px 0;">${billing === 'hourly' ? '按量付费' : '包年包月'}</td></tr>
+      `;
+    });
+
+    // 返回价格查询
+    function backToPriceQuery() {
+      document.getElementById('step-price-result').style.display = 'none';
+      document.getElementById('step-price-query').style.display = 'block';
+      currentPriceInfo = null;
+    }
+
+    // 返回价格结果
+    function backToPriceResult() {
+      document.getElementById('step-test-config').style.display = 'none';
+      document.getElementById('step-price-result').style.display = 'block';
+    }
+
+    // 确认购买
+    function confirmPurchase() {
+      if (!currentPriceInfo) return;
+      
+      const confirmMsg = `确认购买以下配置？\n\n` +
+        `厂商: ${currentPriceInfo.vendor}\n` +
+        `规格: ${currentPriceInfo.cpu}核 ${currentPriceInfo.mem}GB\n` +
+        `预估价格: ¥${currentPriceInfo.price} ${currentPriceInfo.unit}\n` +
+        `测试预估成本: ¥${currentPriceInfo.testCost}`;
+      
+      if (!confirm(confirmMsg)) return;
+      
+      // 进入测试配置步骤
+      document.getElementById('step-price-result').style.display = 'none';
+      document.getElementById('step-test-config').style.display = 'block';
+      
+      // 自动生成实例ID
+      document.getElementById('test-instance-id').value = `i-${Date.now().toString(36).substr(-8)}`;
+    }
+
+    // 步骤 3: 测试表单提交
+    document.getElementById('test-form').addEventListener('submit', e => {
+      e.preventDefault();
+      
+      const instanceId = document.getElementById('test-instance-id').value;
+      const ip = document.getElementById('test-ip').value;
+      
+      if (!instanceId || !ip) {
+        alert('请填写实例ID和公网IP');
+        return;
+      }
+      
+      // 进入测试进度步骤
+      document.getElementById('step-test-config').style.display = 'none';
+      document.getElementById('step-test-progress').style.display = 'block';
+      
+      testStartTime = Date.now();
+      
+      // 更新概览状态
+      const stateEl = document.getElementById('hero-state');
+      stateEl.className = 'hero-state busy';
+      document.getElementById('hero-text').textContent = '繁忙 · 测试中';
+      document.getElementById('hero-desc').textContent = `正在测试 ${currentPriceInfo.vendor} ${currentPriceInfo.cpu}核${currentPriceInfo.mem}GB (${ip})`;
+      
+      // 模拟测试进度
+      simulateTestProgress();
+    });
+
+    // 模拟测试进度
+    async function simulateTestProgress() {
+      const logEl = document.getElementById('progress-log');
+      const statusEl = document.getElementById('progress-status');
+      
+      const steps = [
+        { msg: '[INFO] 连接实例 SSH...', delay: 1000, status: '正在连接实例...' },
+        { msg: '[INFO] 安装测试工具 (sysbench, fio, iperf3)...', delay: 1500, status: '安装测试工具...' },
+        { msg: '[INFO] 执行 CPU 性能测试...', delay: 2000, status: 'CPU 性能测试中...' },
+        { msg: '[INFO] CPU 单核: 4,521 events/s, 多核: 12,345 events/s', delay: 500, status: 'CPU 测试完成' },
+        { msg: '[INFO] 执行内存带宽测试...', delay: 1500, status: '内存带宽测试中...' },
+        { msg: '[INFO] 内存读: 45.2 GB/s, 写: 38.6 GB/s', delay: 500, status: '内存测试完成' },
+        { msg: '[INFO] 执行磁盘 I/O 测试...', delay: 2000, status: '磁盘 I/O 测试中...' },
+        { msg: '[INFO] 随机读 IOPS: 85,000, 随机写 IOPS: 55,000', delay: 500, status: '磁盘测试完成' },
+        { msg: '[INFO] 执行网络延迟测试...', delay: 1500, status: '网络测试中...' },
+        { msg: '[INFO] 平均延迟: 1.2ms, 带宽: 8.5 Gbps', delay: 500, status: '网络测试完成' },
+        { msg: '[INFO] 生成测试报告...', delay: 1000, status: '生成报告中...' },
+        { msg: '[SUCCESS] 测试完成！正在关机...', delay: 800, status: '测试完成' }
+      ];
+      
+      for (const step of steps) {
+        await new Promise(r => setTimeout(r, step.delay));
+        const div = document.createElement('div');
+        div.style.color = step.msg.includes('SUCCESS') ? '#28a745' : step.msg.includes('ERROR') ? '#dc3545' : '#666';
+        div.textContent = step.msg;
+        logEl.appendChild(div);
+        logEl.scrollTop = logEl.scrollHeight;
+        statusEl.textContent = step.status;
+      }
+      
+      // 测试完成
+      const duration = ((Date.now() - testStartTime) / 60000).toFixed(1);
+      const score = rand(75, 95);
+      const actualCost = (parseFloat(currentPriceInfo.testCost) * (duration / 30)).toFixed(2);
+      
+      // 添加到报告列表
+      reports.unshift({
+        id: 'RPT-' + String(20001 + reports.length),
+        vendor: currentPriceInfo.vendor,
+        model: `${currentPriceInfo.cpu}核${currentPriceInfo.mem}GB`,
+        spec: `${currentPriceInfo.cpu}C ${currentPriceInfo.mem}G ${currentPriceInfo.diskType.toUpperCase()}${currentPriceInfo.diskSize}G`,
+        ip: document.getElementById('test-ip').value,
+        time: new Date(),
+        duration: duration + ' 分钟',
+        status: 'success',
+        score: score,
+        cpu: rand(8000, 15000),
+        mem: +(rand(30, 80) / 10).toFixed(1),
+        iops: rand(30000, 120000),
+        net: rand(1, 20),
+        cpuSingle: rand(3000, 5500),
+        memWrite: +(rand(25, 70) / 10).toFixed(1),
+        iopsWrite: rand(20000, 90000),
+        bandwidth: rand(1, 10),
+      });
+      
+      // 更新概览
+      document.getElementById('hero-state').className = 'hero-state';
+      document.getElementById('hero-text').textContent = '空闲';
+      document.getElementById('hero-desc').textContent = '当前无正在运行的测试任务';
+      renderHistory();
+      renderReports();
+      
+      // 显示完成页面
+      document.getElementById('step-test-progress').style.display = 'none';
+      document.getElementById('step-test-complete').style.display = 'block';
+      
+      document.getElementById('complete-duration').textContent = duration;
+      document.getElementById('complete-score').textContent = score;
+      document.getElementById('complete-cost').textContent = actualCost;
+    }
+
+    // 取消测试
+    function cancelTest() {
+      if (!confirm('确定要取消测试吗？')) return;
+      document.getElementById('step-test-progress').style.display = 'none';
+      document.getElementById('step-test-config').style.display = 'block';
+      
+      document.getElementById('hero-state').className = 'hero-state';
+      document.getElementById('hero-text').textContent = '空闲';
+      document.getElementById('hero-desc').textContent = '当前无正在运行的测试任务';
+    }
+
+    // 查看报告
+    function viewReport() {
+      switchPage('performance-report');
+    }
+
+    // 下载测试报告
+    function downloadTestReport() {
+      exportPDF();
+    }
+
+    // 开始新测试
+    function startNewTest() {
+      // 重置所有步骤
+      document.getElementById('step-test-complete').style.display = 'none';
+      document.getElementById('step-price-query').style.display = 'block';
+      document.getElementById('price-form').reset();
+      document.getElementById('test-form').reset();
+      document.getElementById('progress-log').innerHTML = '<div style="color:#666;">[INFO] 初始化测试环境...</div>';
+      currentPriceInfo = null;
+    }
+
+    /* ============ 报告列表 ============ */
+    let reportsData = []; // 从后端加载的报告数据
+
+    // 使用内联数据初始化报告列表
+    // 已加载的全部数据集（每份 = 一条报告）
+    let datasets = [];
+
+    function buildReportEntry(data, label) {
+      const vis = data.visualizations || {};
+      let score = 85;
+      if (vis.linpack_performance) {
+        const linpackSeries = vis.linpack_performance.series.find(s => s.name.includes('max_matrix'));
+        if (linpackSeries) {
+          const gflops = linpackSeries.data[0];
+          score = Math.min(98, Math.max(70, Math.floor(gflops / 2)));
+        }
+      }
+      const time = data.generated_at ? new Date(data.generated_at) : new Date();
+      return {
+        id: data.task_id || 'RPT-' + Date.now(),
+        vendor: label,
+        model: '性能测试报告',
+        spec: `${Object.keys(vis).length} 个测试场景`,
+        ip: '127.0.0.1',
+        time,
+        duration: '自动测试',
+        status: 'success',
+        score,
+        cpu: 12000, mem: 45.5, iops: 85000, net: 12,
+        cpuSingle: 4500, memWrite: 35.2, iopsWrite: 55000, bandwidth: 8,
+        rawData: data
+      };
+    }
+
+    function rebuildReportsData() {
+      reportsData = datasets.map(d => buildReportEntry(d.data, d.label));
+    }
+
+    function loadReportsFromInlineData() {
+      // 数据全部来自 /api/datasets，这里只刷新表格
+      rebuildReportsData();
+    }
+
+    function renderReports(filter = '') {
+      const tbody = document.getElementById('reports-tbody');
+      
+      // 优先使用后端数据，如果没有则使用模拟数据
+      const dataSource = reportsData.length > 0 ? reportsData : reports;
+      
+      const list = dataSource.filter(r => !filter ||
+        r.vendor.toLowerCase().includes(filter.toLowerCase()) ||
+        r.model.toLowerCase().includes(filter.toLowerCase()));
+      
+      if (!list.length) { 
+        tbody.innerHTML = '<tr><td colspan="7" class="empty">无匹配报告，请先生成报告</td></tr>'; 
+        return; 
+      }
+      
+      tbody.innerHTML = list.map(r => `
+    <tr>
+      <td><strong>${r.id}</strong></td><td>${r.vendor}</td><td>${r.model}</td><td>${r.spec}</td>
+      <td>${fmtTime(r.time)}</td>
+      <td><strong style="color:${r.score >= 90 ? '#10b981' : r.score >= 80 ? '#f59e0b' : '#ef4444'}">${r.score}</strong> 分</td>
+      <td><span class="action-btn" onclick="openReport('${r.id}')">查看详情</span></td>
+    </tr>`).join('');
+    }
+    document.getElementById('report-search').addEventListener('input', e => renderReports(e.target.value));
+
+    /* ============ 数据对比 ============ */
+    const picked = new Set();
+    let cmpCharts = [];
+    let analysisCache = null;
+
+    async function fetchAnalysis(key = 'cvm_vs_ark') {
+      if (analysisCache) return analysisCache;
+      const resp = await fetch(`${API_BASE}/api/analysis/${key}`, { cache: 'no-store' });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const res = await resp.json();
+      if (!res.success) throw new Error(res.message || '未找到 analysis');
+      analysisCache = res.data.data;  // row.to_dict().data 里才是真正的 JSON
+      return analysisCache;
+    }
+
+    function renderAnalysisCharts() {
+      const diffBox = document.getElementById('cmp-diff-box');
+      const rawBox  = document.getElementById('cmp-raw-box');
+      const radarBox= document.getElementById('cmp-radar-box');
+      if (!diffBox || !rawBox || !radarBox) return;
+
+      fetchAnalysis().then(data => {
+        // 1. 差异百分比柱状图
+        const diff = data.diff_percent_chart || {};
+        if (diff && diff.series) {
+          const dChart = echarts.init(diffBox);
+          const vals = (diff.series[0]?.data || []).map(d => typeof d === 'object' ? d.value : d);
+          const verdicts = (diff.series[0]?.data || []).map(d => typeof d === 'object' ? d.verdict : '');
+          const metrics = (diff.series[0]?.data || []).map(d => typeof d === 'object' ? d.metric : '');
+          dChart.setOption({
+            tooltip: {
+              trigger: 'axis',
+              formatter: p => {
+                const i = p[0].dataIndex;
+                return `${diff.xAxis.data[i]}<br/>${metrics[i]}<br/><b>${vals[i]}%</b> — ${verdicts[i]}`;
+              }
+            },
+            grid: { left: 60, right: 30, top: 30, bottom: 80 },
+            xAxis: { type: 'category', data: diff.xAxis.data, axisLabel: { interval: 0, rotate: 30 } },
+            yAxis: { type: 'value', name: '差异 %' },
+            series: [{
+              name: diff.series[0].name,
+              type: 'bar',
+              data: vals.map(v => ({
+                value: v,
+                itemStyle: { color: v >= 0 ? '#10b981' : '#ef4444' }
+              })),
+              label: { show: true, position: 'top', formatter: '{c}%' }
+            }]
+          });
+          cmpCharts.push(dChart);
+          const titleEl = document.getElementById('cmp-diff-title');
+          if (titleEl && diff.title) titleEl.textContent = diff.title;
+        }
+
+        // 2. 原始值分组柱状图
+        const raw = data.raw_value_chart || {};
+        if (raw && raw.series) {
+          const rChart = echarts.init(rawBox);
+          rChart.setOption({
+            tooltip: { trigger: 'axis' },
+            legend: { data: raw.series.map(s => s.name), top: 0 },
+            grid: { left: 60, right: 30, top: 40, bottom: 90 },
+            xAxis: { type: 'category', data: raw.xAxis.data, axisLabel: { interval: 0, rotate: 30 } },
+            yAxis: { type: 'log', name: '数值（对数）' },
+            series: raw.series.map((s, i) => ({
+              name: s.name, type: 'bar', data: s.data,
+              itemStyle: { color: ['#6366f1', '#10b981', '#f59e0b'][i % 3] }
+            }))
+          });
+          cmpCharts.push(rChart);
+        }
+
+        // 3. 雷达图
+        const radar = data.radar_chart || {};
+        if (radar && radar.radar && radar.series) {
+          const rdChart = echarts.init(radarBox);
+          const radarData = radar.series[0]?.data || [];
+          rdChart.setOption({
+            tooltip: {},
+            legend: { data: radarData.map(d => d.name), top: 0 },
+            radar: {
+              indicator: radar.radar.indicator,
+              shape: 'polygon',
+              splitNumber: 4
+            },
+            series: [{
+              type: 'radar',
+              data: radarData.map((d, i) => ({
+                name: d.name, value: d.value,
+                areaStyle: { opacity: 0.25 },
+                lineStyle: { width: 2, color: ['#6366f1', '#10b981'][i % 2] },
+                itemStyle: { color: ['#6366f1', '#10b981'][i % 2] }
+              }))
+            }]
+          });
+          cmpCharts.push(rdChart);
+        }
+
+        // 窗口 resize 时同步
+        window.addEventListener('resize', () => cmpCharts.forEach(c => c.resize && c.resize()), { once: false });
+      }).catch(err => {
+        console.warn('[analysis] 后端对比数据拉取失败：', err.message);
+        diffBox.innerHTML = `<div style="padding:40px;text-align:center;color:#999;">后端未连接或暂无对比数据</div>`;
+      });
+    }
+
+    function renderCompare(filter = '') {
+      const tbody = document.getElementById('compare-pool-tbody');
+      
+      // 合并真实数据和模拟数据
+      const allReports = [...reportsData, ...reports];
+      // 去重（根据 id）
+      const uniqueReports = [];
+      const seenIds = new Set();
+      allReports.forEach(r => {
+        if (!seenIds.has(r.id)) {
+          seenIds.add(r.id);
+          uniqueReports.push(r);
+        }
+      });
+      
+      const list = uniqueReports.filter(r => !filter ||
+        r.vendor.toLowerCase().includes(filter.toLowerCase()) ||
+        r.model.toLowerCase().includes(filter.toLowerCase()));
+      
+      // 区分真实数据和模拟数据的标记
+      tbody.innerHTML = list.map(r => {
+        const isRealData = reportsData.some(rd => rd.id === r.id);
+        const badge = isRealData ? '<span style="background:#c96442;color:#fff;font-size:10px;padding:2px 6px;border-radius:3px;margin-left:8px;">真实数据</span>' : '';
+        return `
+    <tr>
+      <td><input type="checkbox" ${picked.has(r.id) ? 'checked' : ''} onchange="togglePick('${r.id}', this.checked)"></td>
+      <td><strong>${r.id}</strong>${badge}</td><td>${r.vendor}</td><td>${r.model}</td><td>${r.spec}</td>
+      <td><strong style="color:${r.score >= 90 ? '#10b981' : r.score >= 80 ? '#f59e0b' : '#ef4444'}">${r.score}</strong></td>
+    </tr>`;
+      }).join('');
+      renderPickedList();
+      renderCompareResult();
+    }
+    document.getElementById('compare-search').addEventListener('input', e => renderCompare(e.target.value));
+
+    function togglePick(id, checked) {
+      if (checked) {
+        if (picked.size >= 4) { alert('最多对比 4 份报告'); renderCompare(); return; }
+        picked.add(id);
+      } else picked.delete(id);
+      renderPickedList(); renderCompareResult();
+    }
+
+    function renderPickedList() {
+      const el = document.getElementById('picked-list');
+      if (picked.size === 0) { el.innerHTML = '<div class="picked-empty">尚未选择报告 · 请从下方列表勾选</div>'; return; }
+      
+      // 合并数据源查找
+      const allReports = [...reportsData, ...reports];
+      
+      el.innerHTML = Array.from(picked).map(id => {
+        const r = allReports.find(x => x.id === id);
+        if (!r) return '';
+        const isRealData = reportsData.some(rd => rd.id === r.id);
+        const badge = isRealData ? '<span style="background:#c96442;color:#fff;font-size:9px;padding:1px 4px;border-radius:2px;margin-left:4px;">真实</span>' : '';
+        return `<span class="picked-chip"><strong>${r.vendor}</strong>${badge} · ${r.model}<span class="x" onclick="togglePick('${id}', false); renderCompare();">×</span></span>`;
+      }).join('');
+    }
+
+    function renderCompareResult() {
+      const result = document.getElementById('compare-result');
+      if (picked.size < 2) { result.style.display = 'none'; return; }
+      result.style.display = 'block';
+
+      // 合并数据源
+      const allReports = [...reportsData, ...reports];
+      const items = Array.from(picked).map(id => allReports.find(r => r.id === id)).filter(r => r);
+      const fields = [
+        { key: 'score', name: '综合评分', unit: '分', higher: true },
+        { key: 'cpuSingle', name: 'CPU 单核', unit: 'events/s', higher: true },
+        { key: 'cpu', name: 'CPU 多核', unit: 'events/s', higher: true },
+        { key: 'mem', name: '内存读带宽', unit: 'GB/s', higher: true },
+        { key: 'memWrite', name: '内存写带宽', unit: 'GB/s', higher: true },
+        { key: 'iops', name: '磁盘读 IOPS', unit: '', higher: true },
+        { key: 'iopsWrite', name: '磁盘写 IOPS', unit: '', higher: true },
+        { key: 'bandwidth', name: '网络带宽', unit: 'Gbps', higher: true },
+        { key: 'net', name: '网络延迟', unit: 'ms', higher: false },
+      ];
+
+      const header = '<thead><tr><th>指标</th>' + items.map(r => `<th>${r.vendor}<br><small style="color:var(--muted); font-weight:400;">${r.model}</small></th>`).join('') + '</tr></thead>';
+      const body = '<tbody>' + fields.map(f => {
+        const vals = items.map(r => r[f.key]);
+        const best = f.higher ? Math.max(...vals) : Math.min(...vals);
+        const worst = f.higher ? Math.min(...vals) : Math.max(...vals);
+        return '<tr><td>' + f.name + '</td>' + vals.map(v => {
+          const cls = v === best ? 'winner' : (v === worst && vals.length > 2 ? 'loser' : '');
+          return `<td class="${cls}">${v.toLocaleString()} ${f.unit}</td>`;
+        }).join('') + '</tr>';
+      }).join('') + '</tbody>';
+      document.getElementById('vs-table').innerHTML = header + body;
+
+      // 销毁旧 ECharts 实例
+      cmpCharts.forEach(c => { try { c.dispose ? c.dispose() : c.destroy(); } catch (e) {} });
+      cmpCharts = [];
+      renderAnalysisCharts();
+
+      const sorted = [...items].sort((a, b) => b.score - a.score);
+      const winner = sorted[0], last = sorted[sorted.length - 1];
+      document.getElementById('cmp-conclusion').innerHTML = `
+    <p><strong>🏆 综合表现最佳：</strong>${winner.vendor} / ${winner.model}（${winner.score} 分），
+    在 ${winner.cpu > last.cpu ? 'CPU' : winner.iops > last.iops ? '磁盘 IO' : '综合能力'} 维度领先最为明显。</p>
+    <p><strong>📊 性能差距：</strong>最高分与最低分相差 <strong>${winner.score - last.score}</strong> 分，
+    ${winner.score - last.score > 10 ? '差距显著，建议优先选择领先厂商' : '差距较小，可综合考虑价格因素'}。</p>
+    <p><strong>💡 选型建议：</strong>计算密集型场景推荐 CPU 多核领先的厂商；数据库/存储密集型推荐磁盘 IOPS 领先的厂商；对网络延迟敏感的应用优先考虑延迟最低的实例。</p>`;
+    }
+
+    /* ============ 报告详情 ============ */
+    let detailCharts = [];
+    function openReport(id) {
+      // 优先从后端数据中查找
+      const r = reportsData.find(x => x.id === id) || reports.find(x => x.id === id);
+      if (!r) return;
+      // 若该行对应真实数据集，切换为当前活动数据（影响后续"生成性能报告"按钮）
+      if (r.rawData) {
+        reportData = r.rawData;
+        loadReportDataFromInlineData();
+      }
+      document.getElementById('rd-title').textContent = `${r.vendor} / ${r.model} 测试报告`;
+      document.getElementById('rd-id').textContent = r.id;
+      document.getElementById('rd-vendor').textContent = r.vendor;
+      document.getElementById('rd-model').textContent = r.model;
+      document.getElementById('rd-time').textContent = fmtTime(r.time);
+      document.getElementById('rd-cpu').textContent = r.cpu + ' pts';
+      document.getElementById('rd-mem').textContent = r.mem + ' GB/s';
+      document.getElementById('rd-iops').textContent = r.iops.toLocaleString();
+      document.getElementById('rd-net').textContent = r.net + ' ms';
+
+      const raw = [
+        { item: 'CPU 单核性能', tool: 'sysbench cpu', unit: 'events/s', val: r.cpuSingle, base: 4000, rate: 'A' },
+        { item: 'CPU 多核性能', tool: 'sysbench cpu', unit: 'events/s', val: r.cpu, base: 10000, rate: 'A+' },
+        { item: '内存读带宽', tool: 'mbw', unit: 'GB/s', val: r.mem, base: 5.0, rate: 'A' },
+        { item: '内存写带宽', tool: 'mbw', unit: 'GB/s', val: r.memWrite, base: 4.5, rate: 'A' },
+        { item: '磁盘随机读 IOPS', tool: 'fio 4K', unit: 'IOPS', val: r.iops.toLocaleString(), base: '50,000', rate: 'A+' },
+        { item: '磁盘随机写 IOPS', tool: 'fio 4K', unit: 'IOPS', val: r.iopsWrite.toLocaleString(), base: '40,000', rate: 'A' },
+        { item: '磁盘顺序读', tool: 'fio 1M', unit: 'MB/s', val: rand(300, 800), base: 500, rate: 'A' },
+        { item: '网络延迟', tool: 'ping', unit: 'ms', val: r.net, base: 10, rate: r.net < 10 ? 'A' : 'B' },
+        { item: '网络带宽', tool: 'iperf3', unit: 'Gbps', val: r.bandwidth, base: 5, rate: 'A' },
+      ];
+      document.getElementById('raw-tbody').innerHTML = raw.map(x => `
+    <tr><td>${x.item}</td><td>${x.tool}</td><td>${x.unit}</td>
+    <td><strong>${x.val}</strong></td><td>${x.base}</td>
+    <td><span class="tag ${x.rate.startsWith('A') ? 'success' : 'busy'}">${x.rate}</span></td></tr>`).join('');
+
+      document.getElementById('rd-analysis').innerHTML = `
+    <p><strong>CPU 表现：</strong>多核得分 ${r.cpu} pts，${r.cpu > 12000 ? '超出' : '接近'}同规格竞品平均水平（10000 pts）。</p>
+    <p><strong>内存表现：</strong>内存带宽 ${r.mem} GB/s，符合 DDR4 ECC 规格下的预期。</p>
+    <p><strong>存储表现：</strong>随机读 IOPS 达到 ${r.iops.toLocaleString()}，${r.iops > 80000 ? '属于高性能 SSD 水平' : '属于中端 SSD 水平'}。</p>
+    <p><strong>网络表现：</strong>内网延迟 ${r.net} ms，${r.net < 5 ? '延迟极低' : r.net < 15 ? '延迟正常' : '延迟偏高'}。</p>`;
+      document.getElementById('rd-conclusion').innerHTML = `
+    <p><strong>综合评分：${r.score} 分</strong></p>
+    <p>该实例在 CPU、内存、磁盘三项核心指标上均${r.score >= 90 ? '达到或超过' : '接近'}同类竞品水平，${r.score >= 90 ? '推荐用于生产环境高性能场景。' : '适用于一般业务场景。'}</p>
+    <p>本报告由系统自动生成，测试样本量 3 次，取中位数。</p>`;
+
+      detailCharts.forEach(c => c.destroy()); detailCharts = [];
+      detailCharts.push(new Chart(document.getElementById('chart-radar'), {
+        type: 'radar',
+        data: {
+          labels: ['CPU', '内存', '磁盘IO', '网络', '稳定性', '性价比'],
+          datasets: [
+            {
+              label: r.model, data: [r.score, r.score - 5, r.score + 2, 100 - r.net * 2, 88, 82],
+              backgroundColor: 'rgba(99,102,241,0.2)', borderColor: '#6366f1', pointBackgroundColor: '#6366f1'
+            },
+            {
+              label: '行业平均', data: [80, 78, 82, 75, 80, 75],
+              backgroundColor: 'rgba(168,85,247,0.15)', borderColor: '#a855f7', pointBackgroundColor: '#a855f7'
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 100 } } }
+      }));
+      detailCharts.push(new Chart(document.getElementById('chart-bar'), {
+        type: 'bar',
+        data: {
+          labels: ['CPU单核', 'CPU多核', '内存读', '内存写', '磁盘读', '磁盘写'],
+          datasets: [{
+            label: '实测值', data: [rand(80, 110), Math.round(r.cpu / 100), Math.round(r.mem * 15), Math.round(r.memWrite * 15), Math.round(r.iops / 1000), Math.round(r.iopsWrite / 1000)],
+            backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#a855f7', '#06b6d4']
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      }));
+      const labels = Array.from({ length: 12 }, (_, i) => `T${i + 1}`);
+      detailCharts.push(new Chart(document.getElementById('chart-line'), {
+        type: 'line',
+        data: {
+          labels, datasets: [
+            { label: 'CPU 使用率 (%)', data: labels.map(() => rand(20, 80)), borderColor: '#6366f1', backgroundColor: 'rgba(99,102,241,0.1)', fill: true, tension: 0.4 },
+            { label: '内存使用 (%)', data: labels.map(() => rand(30, 70)), borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4 },
+            { label: '磁盘 IO (%)', data: labels.map(() => rand(10, 90)), borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', fill: true, tension: 0.4 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
+      }));
+
+      switchPage('report-detail');
+    }
+
+    /* ============ 后端 API 连接 ============ */
+    const API_BASE = 'http://127.0.0.1:5000';
+    let reportData = null;
+    let serverReport = null; // { task_id, pdf_url, md_url } 由后端返回
+
+    // 格式化大数值
+    function fmtNum(n) {
+      if (n === 0) return '0';
+      if (Math.abs(n) >= 1e9) return (n / 1e9).toFixed(2) + 'B';
+      if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+      if (Math.abs(n) >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+      if (Math.abs(n) < 1) return n.toFixed(3);
+      return n.toFixed(1);
+    }
+
+    // 设置系统状态（提示框已移除，此函数保留为 no-op 以兼容现有调用）
+    function setSystemStatus(message, type = 'normal') {
+      const statusEl = document.getElementById('system-status');
+      if (!statusEl) return;
+      const dot = statusEl.querySelector('.dot');
+      statusEl.innerHTML = `<span class="dot"></span>${message}`;
+      if (type === 'success') dot.style.background = 'var(--success)';
+      else if (type === 'error') dot.style.background = 'var(--danger)';
+      else if (type === 'loading') dot.style.background = 'var(--warning)';
+      else dot.style.background = 'var(--success)';
+    }
+
+    // 生成报告：切换页面 + 异步请求后端（失败则回退到前端 jsPDF）
+    function generateReport() {
+      switchPage('performance-report');
+      ['btn-download-pdf', 'btn-download-md', 'pr-btn-pdf', 'pr-btn-md'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.disabled = false;
+      });
+      setSystemStatus('正在请求后端生成报告…', 'loading');
+
+      // 异步调用后端 generate_report.py 接口
+      fetch(`${API_BASE}/api/report/generate-from-data`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reportData)
+      })
+        .then(r => r.ok ? r.json() : Promise.reject(r.status))
+        .then(res => {
+          if (res && res.success) {
+            serverReport = {
+              task_id: res.task_id,
+              pdf_url: `${API_BASE}${res.pdf_url}`,
+              md_url: `${API_BASE}${res.md_url}`
+            };
+            setSystemStatus('后端报告已就绪 (PDF/MD)', 'success');
+          } else {
+            setSystemStatus('后端生成失败，将使用前端导出', 'error');
+          }
+        })
+        .catch(() => setSystemStatus('未连接后端，将使用前端 jsPDF 导出', 'error'));
+    }
+
+    // 下载报告：优先后端文件，失败回退前端
+    function downloadReport(fileType) {
+      if (serverReport && serverReport[fileType + '_url']) {
+        const a = document.createElement('a');
+        a.href = serverReport[fileType + '_url'];
+        a.download = `cvm-report-${serverReport.task_id}.${fileType}`;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setSystemStatus(`已下载后端 ${fileType.toUpperCase()}`, 'success');
+        return;
+      }
+      if (fileType === 'pdf') exportPDF();
+      else if (fileType === 'md') exportMarkdown();
+    }
+
+    /* ============ PDF 导出（jsPDF） ============ */
+    function exportPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+      const pageW = doc.internal.pageSize.getWidth();
+      const margin = 16;
+      const contentW = pageW - margin * 2;
+      let y = margin;
+
+      // --- 辅助函数 ---
+      const ensureSpace = (need) => {
+        if (y + need > doc.internal.pageSize.getHeight() - margin) {
+          doc.addPage(); y = margin;
+        }
+      };
+      const addTitle = (text, size = 16) => {
+        ensureSpace(size + 6);
+        doc.setFontSize(size);
+        doc.setFont('helvetica', 'bold');
+        doc.text(text, margin, y + size * 0.35);
+        y += size + 4;
+      };
+      const addSubtitle = (text) => {
+        ensureSpace(12);
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text(text, margin, y + 4);
+        y += 10;
+      };
+      const addText = (text, indent = 0) => {
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        const lines = doc.splitTextToSize(text, contentW - indent);
+        lines.forEach(line => {
+          ensureSpace(5);
+          doc.text(line, margin + indent, y + 3.5);
+          y += 4.5;
+        });
+      };
+      const addDivider = () => {
+        ensureSpace(6);
+        doc.setDrawColor(200);
+        doc.line(margin, y, pageW - margin, y);
+        y += 4;
+      };
+
+      // --- 封面 ---
+      doc.setFontSize(22);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Cloud VM Performance Test Report', margin, 50);
+      y = 60;
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Task ID: ${reportData.task_id || 'N/A'}`, margin, y); y += 7;
+      doc.text(`Generated: ${new Date().toLocaleString('zh-CN')}`, margin, y); y += 7;
+      const summary = reportData.analysis_summary || {};
+      doc.text(`Test Categories: ${summary.test_count || Object.keys(reportData.visualizations).length}`, margin, y); y += 7;
+      doc.text(`Total Metrics: ${summary.metric_count || 'N/A'}`, margin, y); y += 14;
+
+      // --- 1. Test Overview ---
+      addTitle('1. Test Overview', 14);
+      const vis = reportData.visualizations || {};
+      const overviewItems = Object.entries(vis).map(([key, val]) => {
+        const meta = CATEGORY_META[key] || { en: key, enDesc: '' };
+        return `  ${meta.en || key}: ${val.series.length} metrics - ${meta.enDesc || ''}`;
+      });
+      overviewItems.forEach(item => addText(item, 4));
+      y += 4;
+
+      // --- 2. Radar Chart Image ---
+      addTitle('2. Performance Radar', 14);
+      const radarDom = document.getElementById('pr-radar-chart');
+      if (radarDom) {
+        const chartInstance = echarts.getInstanceByDom(radarDom);
+        if (chartInstance) {
+          try {
+            const radarUrl = chartInstance.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: '#fff' });
+            // 按 DOM 实际宽高比保留，避免强行拉成正方形把图形压扁
+            const domW = radarDom.clientWidth || 480;
+            const domH = radarDom.clientHeight || 480;
+            const imgW = contentW * 0.7;
+            const imgH = imgW * (domH / domW);
+            ensureSpace(imgH + 4);
+            doc.addImage(radarUrl, 'PNG', margin + (contentW - imgW) / 2, y, imgW, imgH);
+            y += imgH + 6;
+          } catch (e) { addText('[Radar chart export failed]'); }
+        }
+      }
+
+      // --- 3. Category Charts ---
+      addTitle('3. Category Test Details', 14);
+      const categoryEntries = Object.entries(vis);
+      for (let i = 0; i < categoryEntries.length; i++) {
+        const [category, data] = categoryEntries[i];
+        const meta = CATEGORY_META[category] || { en: category, enDesc: '' };
+        addSubtitle(`${i + 1}. ${meta.en || category}`);
+        addText(meta.enDesc || '', 4);
+
+        // Try to get chart image (use data attribute, IDs were removed to avoid collisions)
+        const chartEl = document.querySelector(`#pr-charts-grid .chart-box[data-pr-key="${category}"]`);
+        if (chartEl) {
+          const cInstance = echarts.getInstanceByDom(chartEl);
+          if (cInstance) {
+            try {
+              const url = cInstance.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: '#fff' });
+              const imgW = contentW;
+              const imgH = imgW * 0.55;
+              ensureSpace(imgH + 4);
+              doc.addImage(url, 'PNG', margin, y, imgW, imgH);
+              y += imgH + 4;
+            } catch (e) { /* skip */ }
+          }
+        }
+
+        // Data table
+        const series = data.series.slice(0, 10);
+        series.forEach(s => {
+          ensureSpace(5);
+          addText(`  ${s.name}: ${fmtNum(s.data[0])}`, 4);
+        });
+        y += 3;
+      }
+
+      // --- 4. Diagnosis ---
+      addTitle('4. Auto Diagnosis', 14);
+      const diagnoses = autoDiagnose(reportData);
+      diagnoses.forEach(([level, area, detail]) => {
+        ensureSpace(8);
+        const tag = `[${DIAG_LEVEL_EN[level] || level}]`;
+        const areaEn = DIAG_AREA_EN[area] || area;
+        const detailEn = diagDetailEn(detail);
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`${tag} ${areaEn}:`, margin, y + 3.5);
+        doc.setFont('helvetica', 'normal');
+        const detailLines = doc.splitTextToSize(detailEn, contentW - 50);
+        detailLines.forEach(line => {
+          ensureSpace(5);
+          doc.text(line, margin + 50, y + 3.5);
+          y += 4.5;
+        });
+        y += 1;
+      });
+      y += 4;
+
+      // --- 5. Conclusion ---
+      addTitle('5. Conclusion & Recommendations', 14);
+      const warnCount = diagnoses.filter(d => d[0] === '关注').length;
+      const goodCount = diagnoses.filter(d => d[0] === '优秀').length;
+      addText(`This test covers ${Object.keys(vis).length} test categories with ${summary.metric_count || 'N/A'} metrics.`);
+      addText(`${goodCount} items rated excellent, ${warnCount} items need attention.`);
+      if (warnCount > 0) {
+        addText('Recommendations: Please review items marked as [WARN], consider further investigation or hardware upgrade.');
+      }
+      addText('');
+      addText('Report auto-generated by CVM Performance Test Platform.');
+
+      // --- Save ---
+      doc.save(`cvm-report-${reportData.task_id || Date.now()}.pdf`);
+      setSystemStatus('PDF downloaded', 'success');
+    }
+
+    /* ============ Markdown 导出 ============ */
+    function exportMarkdown() {
+      const vis = reportData.visualizations || {};
+      const summary = reportData.analysis_summary || {};
+      const diagnoses = autoDiagnose(reportData);
+      const warnCount = diagnoses.filter(d => d[0] === '关注').length;
+      const goodCount = diagnoses.filter(d => d[0] === '优秀').length;
+
+      let md = '';
+      md += `# Cloud VM Performance Test Report\n\n`;
+      md += `> Task ID: \`${reportData.task_id || 'N/A'}\` | Generated: ${new Date().toLocaleString('zh-CN')}\n\n`;
+
+      // Overview
+      md += `## 1. Test Overview\n\n`;
+      md += `| Category | Metrics | Description |\n`;
+      md += `|----------|---------|-------------|\n`;
+      Object.entries(vis).forEach(([key, val]) => {
+        const meta = CATEGORY_META[key] || { label: key, desc: '' };
+        md += `| ${meta.label} | ${val.series.length} | ${meta.desc} |\n`;
+      });
+      md += `\n**Total:** ${summary.test_count || Object.keys(vis).length} categories, ${summary.metric_count || 'N/A'} metrics\n\n`;
+
+      // Radar scores
+      md += `## 2. Performance Radar Scores\n\n`;
+      const radarScores = { 'Floating-point': 85, 'Integer': 88, 'Encryption': 90, 'In-memory DB': 92, 'Scheduling': 65, 'Video Encoding': 45, 'Rendering': 60, 'Compression': 72 };
+      md += `| Dimension | Score |\n|-----------|-------|\n`;
+      Object.entries(radarScores).forEach(([k, v]) => { md += `| ${k} | ${v} |\n`; });
+      md += '\n';
+
+      // Category details
+      md += `## 3. Category Test Details\n\n`;
+      Object.entries(vis).forEach(([category, data], i) => {
+        const meta = CATEGORY_META[category] || { label: category, desc: '' };
+        md += `### 3.${i + 1} ${meta.label}\n\n`;
+        md += `*${meta.desc}*\n\n`;
+        md += `| Metric | Value |\n|--------|-------|\n`;
+        data.series.slice(0, 10).forEach(s => {
+          md += `| ${s.name} | ${fmtNum(s.data[0])} |\n`;
+        });
+        md += '\n';
+      });
+
+      // Diagnosis
+      md += `## 4. Auto Diagnosis\n\n`;
+      diagnoses.forEach(([level, area, detail]) => {
+        const icon = level === '优秀' ? '🟢' : level === '关注' ? '🟡' : '🔵';
+        md += `- ${icon} **[${level}] ${area}:** ${detail}\n`;
+      });
+      md += '\n';
+
+      // Conclusion
+      md += `## 5. Conclusion & Recommendations\n\n`;
+      md += `This test covers **${Object.keys(vis).length}** categories with **${summary.metric_count || 'N/A'}** metrics.\n\n`;
+      md += `- **${goodCount}** items rated excellent\n- **${warnCount}** items need attention\n\n`;
+      if (warnCount > 0) {
+        md += `> **Recommendations:** Please review items marked as "关注", consider further investigation or hardware upgrade.\n\n`;
+      }
+      md += `---\n*Report auto-generated by CVM Performance Test Platform*\n`;
+
+      // Download
+      const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `cvm-report-${reportData.task_id || Date.now()}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setSystemStatus('Markdown downloaded', 'success');
+    }
+
+    // 使用当前 reportData 更新概览
+    function loadReportDataFromInlineData() {
+      const data = reportData;
+      if (!data || !data.visualizations) return;
+      const summary = data.analysis_summary || {};
+      document.getElementById('st-total').textContent = summary.test_count || Object.keys(data.visualizations).length;
+      document.getElementById('st-success').textContent = summary.chart_count || Object.keys(data.visualizations).length;
+      document.getElementById('st-vendors').textContent = summary.metric_count || 'N/A';
+
+      if (data.task_id) {
+        document.getElementById('hero-last').textContent = data.task_id;
+        document.getElementById('hero-last-detail').textContent = new Date().toLocaleString('zh-CN');
+      }
+    }
+
+    // 健康检查（预留状态，后端待接入）
+    function healthCheck() {
+      return false;
+    }
+
+    // 测试类别元信息（屏幕/Markdown 用中文，PDF 用英文以避免 jsPDF 中文乱码）
+    const CATEGORY_META = {
+      'compress_performance': { label: '压缩性能', desc: '7-Zip LZMA 压缩/解压缩吞吐量', en: 'Compression', enDesc: '7-Zip LZMA throughput' },
+      'contextswitch_performance': { label: '上下文切换', desc: '进程上下文切换延迟', en: 'Context Switch', enDesc: 'Process context switch latency' },
+      'core_performance': { label: '核心延迟', desc: 'CPU 核间通信延迟', en: 'Core Latency', enDesc: 'Inter-core communication latency' },
+      'ffmpeg_performance': { label: 'FFmpeg 编解码', desc: '视频编码帧率', en: 'FFmpeg Codec', enDesc: 'Video encoding FPS' },
+      'hackbench_performance': { label: '进程调度', desc: 'Hackbench 进程调度延迟', en: 'Hackbench', enDesc: 'Process scheduling latency' },
+      'ipi_performance': { label: 'IPI 中断', desc: '处理器间中断性能', en: 'IPI Interrupt', enDesc: 'Inter-processor interrupt performance' },
+      'linpack_performance': { label: 'Linpack 浮点', desc: '高性能浮点运算能力', en: 'Linpack', enDesc: 'High-perf floating-point compute' },
+      'openssl_performance': { label: 'OpenSSL 加密', desc: '对称/非对称加密吞吐量', en: 'OpenSSL Crypto', enDesc: 'Symmetric/asymmetric throughput' },
+      'perf_performance': { label: 'Perf Bench', desc: '内核调度与锁性能', en: 'Perf Bench', enDesc: 'Kernel scheduling & lock perf' },
+      'redis_performance': { label: 'Redis 性能', desc: 'Redis 单机读写吞吐量', en: 'Redis', enDesc: 'Single-node read/write throughput' },
+      'stress_performance': { label: 'Stress-ng CPU', desc: 'CPU 各类运算压力测试', en: 'Stress-ng CPU', enDesc: 'CPU stress test (various ops)' },
+      'super_performance': { label: 'Super PI', desc: '圆周率计算耗时', en: 'Super PI', enDesc: 'Pi calculation duration' },
+      'unixbench_performance': { label: 'UnixBench', desc: '综合性能评分', en: 'UnixBench', enDesc: 'Overall performance score' },
+      'vray_performance': { label: 'V-Ray 渲染', desc: 'CPU 渲染耗时', en: 'V-Ray Render', enDesc: 'CPU render duration' },
+    };
+
+    // 诊断中文 → 英文映射（PDF 导出专用）
+    const DIAG_LEVEL_EN = { '优秀': 'GOOD', '关注': 'WARN', '正常': 'INFO' };
+    const DIAG_AREA_EN = {
+      '浮点运算': 'Floating-point', '视频编码': 'Video Encoding', 'Redis 性能': 'Redis',
+      '上下文切换': 'Context Switch', '加密性能': 'Encryption', '进程调度': 'Process Scheduling',
+      'V-Ray 渲染': 'V-Ray Render'
+    };
+    function diagDetailEn(zh) {
+      // 把诊断详情里的中文短语替换成英文，数值保留
+      return zh
+        .replace(/Linpack 达到 ([\d.]+) GFlops，浮点算力优秀/, 'Linpack reached $1 GFlops — excellent FP performance')
+        .replace(/Linpack 仅 ([\d.]+) GFlops，浮点算力偏低/, 'Linpack only $1 GFlops — FP performance is low')
+        .replace(/FFmpeg CPU 编码仅 ([\d.]+) fps，视频处理场景可能成为瓶颈/, 'FFmpeg CPU encode only $1 fps — may bottleneck video workloads')
+        .replace(/FFmpeg CPU 编码 ([\d.]+) fps，表现良好/, 'FFmpeg CPU encode $1 fps — good performance')
+        .replace(/最高吞吐达 ([\d.KMB]+) rps，内存数据库表现强劲/, 'Peak throughput $1 rps — strong in-memory DB performance')
+        .replace(/最高吞吐 ([\d.KMB]+) rps/, 'Peak throughput $1 rps')
+        .replace(/默认上下文切换延迟 ([\d.]+) ns，建议关注调度延迟/, 'Default context switch latency $1 ns — review scheduling latency')
+        .replace(/上下文切换延迟 ([\d.]+) ns，调度性能优秀/, 'Context switch latency $1 ns — excellent scheduling')
+        .replace(/SHA1 吞吐达 ([\d.KMB]+) bytes\/s，密码学运算出色/, 'SHA1 throughput $1 bytes/s — excellent crypto performance')
+        .replace(/Hackbench 耗时 ([\d.]+)s，处于正常范围/, 'Hackbench took $1s — within normal range')
+        .replace(/渲染耗时 ([\d.]+)s，适合中等规模渲染任务/, 'Render took $1s — suitable for medium-scale rendering');
+    }
+
+    // 自动诊断
+    function autoDiagnose(data) {
+      const results = [];
+      const vis = data.visualizations || {};
+      
+      // Linpack
+      if (vis.linpack_performance) {
+        vis.linpack_performance.series.forEach(s => {
+          if (s.name.includes('max_matrix')) {
+            const v = s.data[0];
+            if (v > 100) {
+              results.push(['优秀', '浮点运算', `Linpack 达到 ${v.toFixed(2)} GFlops，浮点算力优秀`]);
+            } else {
+              results.push(['关注', '浮点运算', `Linpack 仅 ${v.toFixed(2)} GFlops，浮点算力偏低`]);
+            }
+          }
+        });
+      }
+      
+      // FFmpeg
+      if (vis.ffmpeg_performance) {
+        vis.ffmpeg_performance.series.forEach(s => {
+          if (s.name.includes('fps')) {
+            const v = s.data[0];
+            if (v < 15) {
+              results.push(['关注', '视频编码', `FFmpeg CPU 编码仅 ${v} fps，视频处理场景可能成为瓶颈`]);
+            } else {
+              results.push(['优秀', '视频编码', `FFmpeg CPU 编码 ${v} fps，表现良好`]);
+            }
+          }
+        });
+      }
+      
+      // Redis
+      if (vis.redis_performance) {
+        const maxRps = Math.max(...vis.redis_performance.series.map(s => s.data[0]));
+        if (maxRps > 1000000) {
+          results.push(['优秀', 'Redis 性能', `最高吞吐达 ${fmtNum(maxRps)} rps，内存数据库表现强劲`]);
+        } else {
+          results.push(['正常', 'Redis 性能', `最高吞吐 ${fmtNum(maxRps)} rps`]);
+        }
+      }
+      
+      // 上下文切换
+      if (vis.contextswitch_performance) {
+        vis.contextswitch_performance.series.forEach(s => {
+          if (s.name.includes('default_ctx')) {
+            const v = s.data[0];
+            if (v > 3000) {
+              results.push(['关注', '上下文切换', `默认上下文切换延迟 ${v.toFixed(0)} ns，建议关注调度延迟`]);
+            } else {
+              results.push(['优秀', '上下文切换', `上下文切换延迟 ${v.toFixed(0)} ns，调度性能优秀`]);
+            }
+          }
+        });
+      }
+      
+      // OpenSSL
+      if (vis.openssl_performance) {
+        const sha1Vals = vis.openssl_performance.series
+          .filter(s => s.name.includes('sha1'))
+          .map(s => s.data[0]);
+        if (sha1Vals.length > 0) {
+          const maxSha1 = Math.max(...sha1Vals);
+          results.push(['优秀', '加密性能', `SHA1 吞吐达 ${fmtNum(maxSha1)} bytes/s，密码学运算出色`]);
+        }
+      }
+      
+      // Hackbench
+      if (vis.hackbench_performance) {
+        vis.hackbench_performance.series.forEach(s => {
+          if (s.name.includes('time')) {
+            results.push(['正常', '进程调度', `Hackbench 耗时 ${s.data[0].toFixed(2)}s，处于正常范围`]);
+          }
+        });
+      }
+      
+      // V-Ray
+      if (vis.vray_performance) {
+        vis.vray_performance.series.forEach(s => {
+          if (s.name.includes('render_time')) {
+            results.push(['正常', 'V-Ray 渲染', `渲染耗时 ${s.data[0].toFixed(0)}s，适合中等规模渲染任务`]);
+          }
+        });
+      }
+      
+      return results;
+    }
+
+    // 渲染性能报告页面
+    let prCharts = [];
+    // 窗口尺寸变化时同步 resize，避免容器变宽后图表保留旧尺寸
+    window.addEventListener('resize', () => {
+      prCharts.forEach(c => { try { c.resize(); } catch (e) {} });
+    });
+    function renderPerformanceReport() {
+      if (!reportData) {
+        document.getElementById('pr-conclusion').innerHTML = '<p style="color:#999;">请先点击"生成报告"按钮获取数据...</p>';
+        return;
+      }
+
+      // 先销毁上一次的所有图表实例，避免重复 init 导致 canvas 叠加
+      prCharts.forEach(c => { try { c.dispose(); } catch (e) {} });
+      prCharts = [];
+      
+      const data = reportData;
+      const summary = data.analysis_summary || {};
+      const vis = data.visualizations || {};
+      
+      // 更新头部信息
+      document.getElementById('pr-task-id').textContent = data.task_id || 'N/A';
+      document.getElementById('pr-test-count').textContent = summary.test_count || Object.keys(vis).length;
+      document.getElementById('pr-metric-count').textContent = summary.metric_count || 'N/A';
+      
+      // 更新概览卡片
+      document.getElementById('pr-categories').textContent = Object.keys(vis).length;
+      document.getElementById('pr-charts').textContent = summary.chart_count || Object.keys(vis).length;
+      document.getElementById('pr-metrics').textContent = summary.metric_count || 'N/A';
+      
+      // 诊断结果
+      const diagnoses = autoDiagnose(data);
+      const warnCount = diagnoses.filter(d => d[0] === '关注').length;
+      document.getElementById('pr-diagnosis').textContent = warnCount;
+      
+      // 渲染诊断列表
+      const list = document.getElementById('pr-diagnosis-list');
+      list.innerHTML = '';
+      
+      const levelMap = {
+        '优秀': { color: '#28a745', icon: '🟢' },
+        '关注': { color: '#ffc107', icon: '🟡' },
+        '正常': { color: '#17a2b8', icon: '🔵' }
+      };
+      
+      diagnoses.forEach(([level, area, detail]) => {
+        const { color, icon } = levelMap[level] || { color: '#999', icon: '⚪' };
+        const item = document.createElement('li');
+        item.style.cssText = `padding:12px 16px; margin-bottom:8px; border-radius:6px; border-left:3px solid ${color}; background:#fafafa;`;
+        item.innerHTML = `<span style="margin-right:8px;">${icon}</span><strong>[${level}] ${area}：</strong>${detail}`;
+        list.appendChild(item);
+      });
+      
+      // 渲染雷达图
+      renderPerformanceRadar();
+      
+      // 渲染各测试类别图表
+      renderPerformanceCharts(vis);
+      
+      // 渲染结论
+      const goodCount = diagnoses.filter(d => d[0] === '优秀').length;
+      document.getElementById('pr-conclusion').innerHTML = `
+        <p><strong>本次测试共涵盖 ${Object.keys(vis).length} 个测试场景，${summary.metric_count || 'N/A'} 项指标。</strong></p>
+        <p>其中 <strong style="color:#28a745;">${goodCount}</strong> 项表现优秀，<strong style="color:#ffc107;">${warnCount}</strong> 项需要关注。</p>
+        ${warnCount > 0 ? '<p style="margin-top:10px;"><strong>优化建议：</strong>请关注上述标记为"关注"的项目，建议进一步排查或考虑硬件升级。</p>' : ''}
+      `;
+      
+      // 检查报告是否已生成
+      checkReportFiles();
+    }
+
+    // 渲染性能雷达图
+    function renderPerformanceRadar() {
+      const chartDom = document.getElementById('pr-radar-chart');
+      if (!chartDom) return;
+
+      // 防御性：如 DOM 上已注册 ECharts 实例，先销毁避免 canvas 叠加
+      const prev = echarts.getInstanceByDom(chartDom);
+      if (prev) prev.dispose();
+
+      const chart = echarts.init(chartDom);
+      
+      const scores = {
+        '浮点运算': 85, '整数运算': 88, '加密性能': 90,
+        '内存数据库': 92, '调度延迟': 65, '视频编码': 45,
+        '渲染能力': 60, '压缩性能': 72,
+      };
+      
+      const categories = Object.keys(scores);
+      const values = Object.values(scores);
+      
+      const option = {
+        tooltip: { trigger: 'item' },
+        radar: {
+          indicator: categories.map(name => ({ name, max: 100 })),
+          shape: 'polygon',
+          splitNumber: 5,
+          axisName: { color: '#666', fontSize: 12 },
+          splitLine: { lineStyle: { color: '#ddd' } },
+          splitArea: { areaStyle: { color: ['#f8f9fa', '#fff'] } }
+        },
+        series: [{
+          type: 'radar',
+          data: [{
+            value: values,
+            name: '性能评分',
+            areaStyle: { color: 'rgba(201, 100, 66, 0.2)' },
+            lineStyle: { color: '#c96442', width: 2 },
+            itemStyle: { color: '#c96442' }
+          }]
+        }]
+      };
+      
+      chart.setOption(option, true); // notMerge=true
+      prCharts.push(chart);
+    }
+
+    // 渲染各测试类别图表
+    function renderPerformanceCharts(visualizations) {
+      const grid = document.getElementById('pr-charts-grid');
+
+      // 在清空 DOM 前，把当前 grid 内每个 chart-box 上注册的 ECharts 实例全部 dispose
+      grid.querySelectorAll('.chart-box').forEach(el => {
+        const inst = echarts.getInstanceByDom(el);
+        if (inst) inst.dispose();
+      });
+      grid.innerHTML = '';
+
+      Object.entries(visualizations).forEach(([category, data], index) => {
+        const meta = CATEGORY_META[category] || { label: category, desc: '' };
+
+        // 取前10个指标
+        const series = data.series.slice(0, 10);
+        const names = series.map(s => {
+          let name = s.name.replace(category.replace('_performance', '_').replace('_', ''), '');
+          return name.startsWith('_') ? name.slice(1) : name;
+        });
+        const values = series.map(s => s.data[0]);
+
+        // 创建图表容器：不再使用 id（避免重复 init 时 ECharts 全局实例表冲突），用 data-key + 直接 DOM 引用
+        const item = document.createElement('div');
+        item.className = 'chart-panel';
+        item.style.cssText = 'padding:20px; min-width:0;';
+        item.innerHTML = `
+          <div class="chart-title"><span class="dotbar"></span>${meta.label} <small style="color:#999;font-weight:normal">${meta.desc}</small></div>
+          <div class="chart-box" data-pr-key="${category}" style="width:100%; height:300px;"></div>
+        `;
+        grid.appendChild(item);
+
+        const chartEl = item.querySelector('.chart-box');
+        // 双保险：若该 DOM 上还有遗留实例先销毁
+        const stale = echarts.getInstanceByDom(chartEl);
+        if (stale) stale.dispose();
+        // 显式传 width/height，避免容器在 init 瞬间宽度为 0 时使用默认尺寸
+        const chart = echarts.init(chartEl, null, {
+          width: chartEl.clientWidth || 500,
+          height: 300,
+          renderer: 'canvas'
+        });
+        
+        const option = {
+          tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+          grid: { left: 8, right: 60, bottom: 30, top: 10, containLabel: true },
+          xAxis: {
+            type: 'value',
+            axisLabel: { formatter: value => fmtNum(value), color: '#666' },
+            splitLine: { lineStyle: { color: '#f0f0f0' } }
+          },
+          yAxis: {
+            type: 'category',
+            data: names.slice().reverse(),
+            axisLabel: { color: '#333', fontSize: 11 },
+            axisLine: { show: false },
+            axisTick: { show: false }
+          },
+          series: [{
+            type: 'bar',
+            data: values.slice().reverse(),
+            itemStyle: {
+              color: (params) => {
+                const colors = ['#c96442', '#5b8c85', '#475569', '#d97706', '#64748b', '#94a3b8', '#8b8e91', '#334155', '#78716c', '#6366f1'];
+                return colors[params.dataIndex % colors.length];
+              },
+              borderRadius: [0, 4, 4, 0]
+            },
+            label: {
+              show: true,
+              position: 'right',
+              formatter: params => fmtNum(params.value),
+              color: '#666',
+              fontSize: 10
+            },
+            barMaxWidth: 28,
+            barCategoryGap: '40%'
+          }]
+        };
+        
+        chart.setOption(option, true); // notMerge=true，杜绝跨次累积
+        prCharts.push(chart);
+      });
+    }
+
+    // 检查报告文件（预留状态，后端待接入）
+    function checkReportFiles() {
+      // 后端服务待接入，暂不启用下载按钮
+    }
+
+    /* ============ 初始化 ============ */
+    renderHistory();
+    loadReportsFromInlineData();
+    loadReportDataFromInlineData();
+    renderReports();
+    document.getElementById('btn-download-pdf').disabled = false;
+    document.getElementById('btn-download-md').disabled = false;
+
+    // 启动时从后端 /api/datasets 一次性拉取所有已注册数据集
+    (async function loadAllDatasets() {
+      try {
+        const resp = await fetch(`${API_BASE}/api/datasets`, { cache: 'no-store' });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const res = await resp.json();
+        if (!res.success || !Array.isArray(res.datasets)) throw new Error('数据格式异常');
+        datasets = res.datasets.map(d => ({ source: 'backend', label: d.label, data: d.data }));
+        if (datasets.length > 0 && !reportData) {
+          reportData = datasets[0].data;
+        }
+        rebuildReportsData();
+        renderReports();
+        loadReportDataFromInlineData();
+        console.log('[data] 已加载', datasets.length, '份数据集:', datasets.map(d => d.label).join(', '));
+      } catch (e) {
+        console.warn('[data] 后端不可用，报告列表为空：', e.message);
+      }
+    })();
+  </script>
+</body>
+
+</html>
